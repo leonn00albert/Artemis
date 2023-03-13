@@ -35,6 +35,21 @@ class Response {
             }
        
         }   
+
+        public function type(string $type) {
+            switch($type) {
+                case "html": header('Content-Type: text/html'); 
+                break;
+                case ".html": header('Content-Type: text/html'); 
+                break;
+                case "json": header('Content-Type: application/json'); 
+                break;
+                case "application/json": header('Content-Type: application/json'); 
+                break;
+                default: header("Content-Type: " . $type); break;
+ 
+          }
+        }
     }
 
 ?>
