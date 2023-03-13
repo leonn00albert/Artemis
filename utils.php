@@ -2,17 +2,17 @@
 <?php
 
 class Utils {
-    static function splitUrl($url) {
+    static function splitUrl(string $url):array {
         $segments = explode('/', $url);
         $lastSegment = end($segments);
         $lastSegmentIndex = array_key_last($segments);
         $path = implode('/', array_slice($segments, 0, $lastSegmentIndex));
         return array($path, $lastSegment);
     }
-    static function hasParams($route) {
+    static function hasParams(array $route):bool {
         return str_contains($route['path'],":");
     }
-    static function parseParam($param) {
+    static function parseParam(string $param): string {
         $parsed = explode(':', $param);
         return $parsed[1];
     }

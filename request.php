@@ -4,7 +4,7 @@ require_once('Artemis/utils.php');
 
 class Request {
     public $route = "";
-    public function body(){
+    public function body():array {
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         if(isset($parsed['query'])){
             $query = $parsed['query'];
@@ -14,32 +14,32 @@ class Request {
      
     }
 
-    public function method(){
+    public function method():string {
         $method = $_SERVER['REQUEST_METHOD'];
         return $method ;
     }
 
-    public function path(){
+    public function path():string {
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         return $parsed['path'];
     }
 
-    public function hostname(){
+    public function hostname():string{
         $hostname = $_SERVER['HTTP_HOST'];
         return $hostname;
     }
 
-    public function ip(){
+    public function ip():string {
         $ip = $_SERVER['SERVER_ADDR'];
         return $ip;
     }
 
-    public function protocol(){
+    public function protocol():string {
         $protocol = $_SERVER['SERVER_PROTOCOL'];
         return $protocol;
     }
 
-    public function params(){
+    public function params():array {
         if(Utils::hasParams($this->route)){
             $parsed = parse_url($_SERVER["REQUEST_URI"]);
             list($route_path, $route_lastSegment) = Utils::splitUrl($this->route["path"]);
@@ -49,7 +49,7 @@ class Request {
     
     }
 
-    public function secure(){
+    public function secure():bool {
         $secure = $_SERVER['HTTPS'];
         return $secure;
     }
