@@ -16,6 +16,13 @@
                
         }
 
+        public function post($path,$callback) {
+            array_push($this->routes,array(
+                'path' => $path,
+                'callback' => $callback,
+                'type' => 'POST'
+            ));
+        }   
         public function delete($path,$callback) {
             array_push($this->routes,array(
                 'path' => $path,
