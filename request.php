@@ -14,6 +14,8 @@ class Request {
      
     }
 
+
+
     public function method():string {
         $method = $_SERVER['REQUEST_METHOD'];
         return $method ;
@@ -37,6 +39,11 @@ class Request {
     public function protocol():string {
         $protocol = $_SERVER['SERVER_PROTOCOL'];
         return $protocol;
+    }
+
+    public function xhr():bool {
+        $header = getallheaders();
+        return isset($header['XMLHttpRequest']);;
     }
 
     public function params():array {
