@@ -1,4 +1,5 @@
 <?php
+    require_once("Artemis/utils.php");
     require_once("Artemis/response.php");
     require_once("Artemis/request.php");
     class Artemis {
@@ -31,17 +32,8 @@
             ));
         }   
 
-        private function hasParams($route) {
-            return str_contains($route['path'],":");
-        }
-
-        private function splitUrl($url) {
-            $segments = explode('/', $url);
-            $lastSegment = end($segments);
-            $lastSegmentIndex = array_key_last($segments);
-            $path = implode('/', array_slice($segments, 0, $lastSegmentIndex));
-            return array($path, $lastSegment);
-          }
+ 
+    
 
         public function listen($path,$callback) {
             $request = new Request();
@@ -52,11 +44,12 @@
             foreach($this->routes as $route) {
 
                 if($route['type'] == $_SERVER["REQUEST_METHOD"] ) {
-                if($this->hasParams($route)) {
-                list($path, $lastSegment) = $this->splitUrl($route["path"]);
-                list($second_path, $second_lastSegment) = $this->splitUrl($parsed ["path"]);
+                if(Utils::hasParams($route)) {
+                list($path, $lastSegment) = Utils::splitUrl($route["path"]);
+                list($second_path, $second_lastSegment) = Utils::splitUrl($parsed ["path"]);
 
                 if($path == $second_path){
+                    $request->route = $route;
                     $route["callback"]($request, $response);   
                     $route_exsist = true;
                 }
