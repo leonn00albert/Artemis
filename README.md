@@ -23,6 +23,9 @@ $app->get("/", function($req,$res){
       
 });
 
+$app->listen("/", function(){
+});
+
 ?>
 ```
 Start local server in terminal
