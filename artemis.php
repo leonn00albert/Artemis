@@ -22,7 +22,14 @@
                 'callback' => $callback,
                 'type' => 'POST'
             ));
-        }
+        }   
+        public function delete($path,$callback) {
+            array_push($this->routes,array(
+                'path' => $path,
+                'callback' => $callback,
+                'type' => 'DELETE'
+            ));
+        }   
 
         private function hasParams($route) {
             return str_contains($route['path'],":");
