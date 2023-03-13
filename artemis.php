@@ -1,14 +1,16 @@
 <?php
+    declare(strict_types=1);
     require_once("Artemis/utils.php");
     require_once("Artemis/response.php");
     require_once("Artemis/request.php");
+    
     class Artemis {
        protected $props = array();
        protected $routes = array();
             function __construct(){ 
             }
     
-        public function get($path,$callback) {   
+        public function get(string $path,object $callback) {   
             array_push($this->routes,array(
                 'path' => $path,
                 'callback' => $callback,
@@ -17,14 +19,14 @@
                
         }
 
-        public function post($path,$callback) {
+        public function post(string $path,object $callback) {
             array_push($this->routes,array(
                 'path' => $path,
                 'callback' => $callback,
                 'type' => 'POST'
             ));
         }   
-        public function delete($path,$callback) {
+        public function delete(string $path,object $callback) {
             array_push($this->routes,array(
                 'path' => $path,
                 'callback' => $callback,
@@ -35,7 +37,7 @@
  
     
 
-        public function listen($path,$callback) {
+        public function listen(string $path,object $callback) {
             $request = new Request();
             $response = new Response(); 
             $route_exsist = false;
@@ -73,10 +75,10 @@
     
             $callback();
         }
-        public function setProp($key, $value) {
+        public function setProp(string $key, string $value) {
             array_push($this->props, array($key => $value));
         }
-        public function getProp($key) {
+        public function getProp(string $key) {
             return $this->props[$key];
         }
 

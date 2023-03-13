@@ -2,25 +2,23 @@
 <?php
 class Response {
         public $base_url = "views/";
-        public function send($input) {
+        public function send(string $input) {
             echo $input;
         }  
-        public function status($response_code) {
+        public function status(string $response_code) {
             return http_response_code($response_code);
-            return $this;
         }   
-        public function json($arr) {
+        public function json(array $arr) {
             echo json_encode($arr);
-            return $this;
         }   
-        public function render($file) {
+        public function render(string $file) {
             require($this->base_url . $file);
         }   
-        public function redirect($path) {
+        public function redirect(string $path) {
             header("Location: $path"); 
             exit;
         }   
-        public function download($file) {
+        public function download(string $file) {
             if(file_exists($file)) {
                 header('Content-Description: File Transfer');
                 header('Content-Type: application/octet-stream');
