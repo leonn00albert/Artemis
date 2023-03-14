@@ -6,15 +6,15 @@ Get started:
 ```shell
 mkdir example
 cd example
-code . index.php
+code index.php
+composer require  wdlndfx/artemis:dev-master
 ```
 
 inside index.php ->
 
 ```php
 <?php
-require_once('Artemis/artemis.php');
-
+require_once __DIR__ . '/vendor/wdlndfx/artemis/src/artemis.php';
 $app = new Artemis();
 
 $app->get("/", function($req,$res){
