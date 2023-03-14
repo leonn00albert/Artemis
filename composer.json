@@ -1,0 +1,14 @@
+{
+    "name": "user/artemis",
+    "description": "An Express.js like router for PHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+    "php": ">=8.2"
+    },
+    "authors": [
+        {
+            "name": "Leon Albert"
+        }
+    ]
+}
