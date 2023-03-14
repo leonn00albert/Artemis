@@ -8,8 +8,8 @@ An Express.js like router for php
 [![GitHub Release Date](https://img.shields.io/github/release-date/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/crowdin/crowdin-api-client-php/releases)
 [![GitHub issues](https://img.shields.io/github/issues/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/leonn00albert/Artemis/issues)
 ![GitHub repo size](https://img.shields.io/github/repo-size/leonn00albert/Artemis)
-[![GitHub contributors](https://img.shields.io/github/contributors/leon00albert/Artemis?cacheSeconds=3600)](https://github.com/crowdin/crowdin-api-client-php/graphs/contributors)
-[![GitHub](https://img.shields.io/github/license/leon00albert/crowdin-api-client-php?cacheSeconds=3600)](https://github.com/crowdin/crowdin-api-client-php/blob/master/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/crowdin/crowdin-api-client-php/graphs/contributors)
+[![GitHub](https://img.shields.io/github/license/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/crowdin/crowdin-api-client-php/blob/master/LICENSE)
 
 
 
