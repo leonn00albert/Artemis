@@ -1,5 +1,5 @@
 {
-    "name": "user/artemis",
+    "name": "wdlndfx/artemis",
     "description": "An Express.js like router for PHP",
     "type": "library",
     "license": "MIT",
@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "User\\Artemis\\": "src/"
+            "Wdlndfx\\Artemis\\": "src/"
         }
     },
     "authors": [
