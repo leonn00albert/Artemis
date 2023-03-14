@@ -6,6 +6,11 @@
     "require": {
     "php": ">=8.2"
     },
+    "autoload": {
+        "psr-4": {
+            "User\\Artemis\\": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Leon Albert"
