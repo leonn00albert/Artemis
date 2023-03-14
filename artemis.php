@@ -34,6 +34,14 @@
             ));
         }   
 
+        public function put(string $path,object $callback) {
+            array_push($this->routes,array(
+                'path' => $path,
+                'callback' => $callback,
+                'type' => 'PUT'
+            ));
+        }   
+
  
     
 
