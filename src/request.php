@@ -1,6 +1,6 @@
 <?php
 
-require_once('Artemis/utils.php');
+require_once __DIR__ . '/utils.php';
 
 class Request {
     public $route = "";

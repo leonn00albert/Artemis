@@ -1,8 +1,8 @@
 <?php
     declare(strict_types=1);
-    require_once __DIR__ . '/vendor/wdlndfx/artemis/src/utils.php';
-    require_once __DIR__ . '/vendor/wdlndfx/artemis/src/response.php';
-    require_once __DIR__ . '/vendor/wdlndfx/artemis/src/request.php';
+    require_once __DIR__ . '/utils.php';
+    require_once __DIR__ . '/response.php';
+    require_once __DIR__ . '/request.php';
     
     class Artemis {
        protected $props = array();
