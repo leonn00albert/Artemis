@@ -1,0 +1,219 @@
+<?php
+
+declare(strict_types=1);
+require_once __DIR__ . '/utils.php';
+require_once __DIR__ . '/response.php';
+require_once __DIR__ . '/request.php';
+
+/**
+ * 
+ */
+class Router
+{
+    /**
+     * @var array
+     */
+    private static $instances = [];
+    /**
+     * @var array
+     */
+    protected $props = array();
+    /**
+     * @var array
+     */
+    protected $routes = array();
+    /**
+     * @var Request
+     */
+    protected Request $request;
+    /**
+     * @var Response
+     */
+    protected Response $response;
+
+    /**
+     *
+     */
+    protected function __construct()
+    {
+    }
+
+    /**
+     * @return void
+     */
+    protected function __clone()
+    {
+    }
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    public function __wakeup()
+    {
+        throw new \Exception("Cannot unserialize Router.");
+    }
+
+    /**
+     * @return Router
+     */
+    public static function getInstance(): Router
+    {
+        $cls = static::class;
+        if (!isset(self::$instances[$cls])) {
+
+            self::$instances[$cls] = new static();
+        }
+
+        return self::$instances[$cls];
+    }
+
+
+    /**
+     * @param string $path
+     * @param object $middleware
+     * @return $this
+     */
+    public function get(string $path , object $middleware)
+    {
+        $arg = array_slice(func_get_args(),1);
+    
+        $this->request = new Request();
+        $this->response = new Response();
+        array_push($this->routes, array(
+            'path' => $path,
+            'type' => 'GET',
+            'middleware' =>   $arg,
+        ));
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @param object $middleware
+     * @return $this
+     */
+    public function post(string $path, object $middleware)
+    {
+        $arg = array_slice(func_get_args(),1);
+    
+        $this->request = new Request();
+        $this->response = new Response();
+        array_push($this->routes, array(
+            'path' => $path,
+            'type' => 'POST',
+            'middleware' =>   $arg,
+        ));
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @param object $callback
+     * @return $this
+     */
+    public function delete(string $path, object $callback)
+    {
+        $arg = array_slice(func_get_args(),1);
+    
+        $this->request = new Request();
+        $this->response = new Response();
+        array_push($this->routes, array(
+            'path' => $path,
+            'type' => 'DELETE',
+            'middleware' =>   $arg,
+        ));
+        return $this;
+    }
+
+    /**
+     * @param string $path
+     * @param object $callback
+     * @return $this
+     */
+    public function put(string $path, object $callback)
+    {
+        $arg = array_slice(func_get_args(),1);
+    
+        $this->request = new Request();
+        $this->response = new Response();
+        array_push($this->routes, array(
+            'path' => $path,
+            'type' => 'PUT',
+            'middleware' =>   $arg,
+        ));
+        return $this;
+    }
+
+
+    /**
+     * @param string $path
+     * @param object $callback
+     * @return void
+     */
+    public function listen(string $path, object $callback)
+    {
+
+        $route_exsist = false;
+        $wild_card = [];
+        $parsed = parse_url($_SERVER["REQUEST_URI"]);
+        foreach ($this->routes as $route) {
+
+            if ($route['type'] == $_SERVER["REQUEST_METHOD"]) {
+                if (Utils::hasParams($route)) {
+                    list($path, $lastSegment) = Utils::splitUrl($route["path"]);
+                    list($second_path, $second_lastSegment) = Utils::splitUrl($parsed["path"]);
+
+                    if ($path == $second_path) {
+
+                        $this->request->route = $route;
+                        foreach ($route["middleware"] as $controller) {
+                            $controller($this->request, $this->response);
+                        }
+                        $route_exsist = true;
+                    }
+                }
+
+                if ($route["path"] === $parsed['path']) {
+                    foreach ($route["middleware"] as $controller) {
+                        $controller($this->request, $this->response);
+                    }
+
+                    $route_exsist = true;
+                } else if ($route["path"] === "*") {
+                    $wild_card = $route["middleware"];
+                }
+            }
+        }
+
+        if (!$route_exsist) {
+            foreach ($wild_card as $controller) {
+                $controller($this->request, $this->response);
+            }
+        }
+
+
+        $callback();
+        unset($this->response);
+        unset($this->request);
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return void
+     */
+    public function setProp(string $key, string $value)
+    {
+        array_push($this->props, array($key => $value));
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getProp(string $key)
+    {
+        return $this->props[$key];
+    }
+}

@@ -12,7 +12,7 @@ class Response {
             echo json_encode($arr);
         }   
         public function render(string $file) {
-            require($this->base_url . $file);
+            require($file);
         }   
         public function redirect(string $path) {
             header("Location: $path"); 

@@ -4,7 +4,15 @@ require_once __DIR__ . '/utils.php';
 
 class Request {
     public $route = "";
-    public function body():array {
+    public function body() {
+        $request_body = file_get_contents('php://input');
+        $data = json_decode($request_body, true); // true to convert to associative array
+
+        return $data ;
+     
+    }
+
+    public function query():array {
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         if(isset($parsed['query'])){
             $query = $parsed['query'];
@@ -14,12 +22,11 @@ class Request {
      
     }
 
-
-
     public function method():string {
         $method = $_SERVER['REQUEST_METHOD'];
         return $method ;
     }
+    
 
     public function path():string {
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
