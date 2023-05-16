@@ -17,7 +17,7 @@ function find_by_query(array $data, array $query):array {
     return $arr;
 
 }
-function delete_by_query(array $data, array $query):array | stdClass {
+function delete_by_query(array $data, array $query):array  {
     $arr = $data;
     for ($i = 0; $i < count($data); $i++) {
         foreach ($data[$i] as $key => $value) {

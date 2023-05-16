@@ -2,7 +2,6 @@
 
 namespace Artemis\Core\DB\JSON;
 
-namespace DB\JSON;
 
 require_once('render_table.php');
 require_once('functions.php');
@@ -62,7 +61,7 @@ class Polecat implements JSON_DB
      *
      * @return stdClass
      */
-    function findOne(array $query): stdClass
+    function findOne(array $query)
     {
         if ($query === []) {
             return [];
