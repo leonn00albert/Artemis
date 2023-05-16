@@ -1,6 +1,9 @@
 <?php
 
-namespace db\JSON;
+namespace Artemis\Core\DB\JSON;
+
+namespace DB\JSON;
+
 require_once('render_table.php');
 require_once('functions.php');
 

@@ -1,8 +1,7 @@
 <?php
 // use strategy
 
-
-namespace secure;
+namespace Artemis\Core\Secure;
 class SimpleLogin
 {
     public $login;

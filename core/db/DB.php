@@ -1,13 +1,14 @@
 <?php
 
-namespace db;
-use Polecat;
+namespace Artemis\Core\DB;
+
+use Artemis\Core\DB\JSON\Polecat;
 
 include "Artemis\db\JSON\db_json.php";
 
 /// make singleton
 // make factory
-class db
+class DB
 {
     public $con;
 
