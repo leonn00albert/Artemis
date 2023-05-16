@@ -1,11 +1,16 @@
 <?php
+
+namespace db\JSON;
 require_once('render_table.php');
 require_once('functions.php');
+
 interface JSON_DB
 {
     public function create(array $arr);
+
     public function find(array $query);
 }
+
 /**
  * A JSON based DB using Mongoose style syntax
  */
@@ -35,23 +40,23 @@ class Polecat implements JSON_DB
 
     /**
      * @param array $query
-     * 
+     *
      * @return [type]
      */
     function find(array $query)
     {
         if ($query === []) {
 
-            return  $this->data;
+            return $this->data;
         } else {
             $result = find_by_query($this->data, $query);
-            return  $result;
+            return $result;
         }
     }
 
     /**
      * @param array $query
-     * 
+     *
      * @return stdClass
      */
     function findOne(array $query): stdClass
@@ -60,12 +65,13 @@ class Polecat implements JSON_DB
             return [];
         } else {
             $result = find_by_query($this->data, $query);
-            return  $result[0];
+            return $result[0];
         }
     }
+
     /**
      * @param array $query
-     * 
+     *
      * @return array
      */
     function deleteMany(array $query): array
@@ -75,14 +81,14 @@ class Polecat implements JSON_DB
                 unlink($this->db_path . '/' . '.json');
                 return [];
             }
-            
-        }   
+
+        }
     }
 
 
     /**
      * @param array $arr
-     * 
+     *
      * @return array
      */
     function create(array $arr): array
@@ -112,7 +118,8 @@ class Polecat implements JSON_DB
             return $result;
         }
     }
-    function updateById(string $id, array $update):array
+
+    function updateById(string $id, array $update): array
     {
         if ($id === []) {
             return $this;
@@ -123,6 +130,7 @@ class Polecat implements JSON_DB
             return update_by_query($this->data, ["id" => $id], $update);
         }
     }
+
     function deleteById(string $id)
     {
         if ($id === []) {
@@ -132,7 +140,7 @@ class Polecat implements JSON_DB
             fwrite($file, json_encode(delete_by_query($this->data, ["id" => $id])));
             fclose($file);
             return delete_by_query($this->data, ["id" => $id]);
-        }   
+        }
     }
 
     function updateMany(array $query, array $update)

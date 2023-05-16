@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types=1);
-require_once __DIR__ . '/utils.php';
-require_once __DIR__ . '/response.php';
-require_once __DIR__ . '/request.php';
+namespace Router;
+
+use Exception;
+use Router\Response;
+use Router\Utils;
 
 /**
- * 
+ *
  */
 class Router
 {
@@ -74,16 +75,16 @@ class Router
      * @param object $middleware
      * @return $this
      */
-    public function get(string $path , object $middleware)
+    public function get(string $path, object $middleware)
     {
-        $arg = array_slice(func_get_args(),1);
-    
+        $arg = array_slice(func_get_args(), 1);
+
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
             'path' => $path,
             'type' => 'GET',
-            'middleware' =>   $arg,
+            'middleware' => $arg,
         ));
         return $this;
     }
@@ -95,14 +96,14 @@ class Router
      */
     public function post(string $path, object $middleware)
     {
-        $arg = array_slice(func_get_args(),1);
-    
+        $arg = array_slice(func_get_args(), 1);
+
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
             'path' => $path,
             'type' => 'POST',
-            'middleware' =>   $arg,
+            'middleware' => $arg,
         ));
         return $this;
     }
@@ -114,14 +115,14 @@ class Router
      */
     public function delete(string $path, object $callback)
     {
-        $arg = array_slice(func_get_args(),1);
-    
+        $arg = array_slice(func_get_args(), 1);
+
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
             'path' => $path,
             'type' => 'DELETE',
-            'middleware' =>   $arg,
+            'middleware' => $arg,
         ));
         return $this;
     }
@@ -133,14 +134,14 @@ class Router
      */
     public function put(string $path, object $callback)
     {
-        $arg = array_slice(func_get_args(),1);
-    
+        $arg = array_slice(func_get_args(), 1);
+
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
             'path' => $path,
             'type' => 'PUT',
-            'middleware' =>   $arg,
+            'middleware' => $arg,
         ));
         return $this;
     }
