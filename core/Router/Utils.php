@@ -1,6 +1,5 @@
 <?php
-
-namespace Router;
+namespace Artemis\Core\Router;
 
 class Utils
 {

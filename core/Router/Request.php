@@ -1,8 +1,8 @@
 <?php
 
-namespace Router;
+namespace Artemis\Core\Router;
 
-use router\Utils;
+use Artemis\Core\Router\Utils;
 
 
 class Request

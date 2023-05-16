@@ -1,10 +1,11 @@
 <?php
 
-namespace Router;
+namespace Artemis\Core\Router;
 
 use Exception;
-use Router\Response;
-use Router\Utils;
+use Artemis\Core\Router\Response;
+use Artemis\Core\Router\Request;
+use Artemis\Core\Router\Utils;
 
 /**
  *
