@@ -3,7 +3,6 @@
 namespace Artemis\Core\DB\JSON;
 
 
-require_once('render_table.php');
 require_once('functions.php');
 
 interface JSON_DB
@@ -16,7 +15,7 @@ interface JSON_DB
 /**
  * A JSON based DB using Mongoose style syntax
  */
-class Polecat implements JSON_DB
+class DBJSON implements JSON_DB
 {
     public string $db_name = "";
     public string $db_path = "";
@@ -30,14 +29,8 @@ class Polecat implements JSON_DB
         }
         $this->db_path = "./" . $name;
         if (is_file($name . '/' . '.json')) {
-            $this->data = open_file_decode_json($this->db_name . '/' . '.json');
+            $this->data = $this->openFileDecodeJson($this->db_name . '/' . '.json');
         }
-    }
-
-    private function update()
-    {
-        $this->data = open_file_decode_json($this->db_name . '/' . '.json');
-        return $this;
     }
 
     /**
@@ -51,7 +44,7 @@ class Polecat implements JSON_DB
 
             return $this->data;
         } else {
-            $result = find_by_query($this->data, $query);
+            $result = $this->findByQuery($this->data, $query);
             return $result;
         }
     }
@@ -66,7 +59,7 @@ class Polecat implements JSON_DB
         if ($query === []) {
             return [];
         } else {
-            $result = find_by_query($this->data, $query);
+            $result = $this->findByQuery($this->data, $query);
             return $result[0];
         }
     }
@@ -86,8 +79,6 @@ class Polecat implements JSON_DB
 
         }
     }
-
-
     /**
      * @param array $arr
      *
@@ -116,7 +107,7 @@ class Polecat implements JSON_DB
         if (!$id) {
             return [];
         } else {
-            $result = find_by_query($this->data, ["id" => $id]);
+            $result = $this->findByQuery($this->data, ["id" => $id]);
             return $result;
         }
     }
@@ -127,7 +118,7 @@ class Polecat implements JSON_DB
             return $this;
         } else {
             $file = fopen($this->db_path . '/' . '.json', 'w');
-            fwrite($file, json_encode(update_by_query($this->data, ["id" => $id], $update)));
+            fwrite($file, json_encode($this->updateByQuery($this->data, ["id" => $id], $update)));
             fclose($file);
             return update_by_query($this->data, ["id" => $id], $update);
         }
@@ -139,7 +130,7 @@ class Polecat implements JSON_DB
             return $this;
         } else {
             $file = fopen($this->db_path . '/' . '.json', 'w');
-            fwrite($file, json_encode(delete_by_query($this->data, ["id" => $id])));
+            fwrite($file, json_encode($this->deleteByQuery($this->data, ["id" => $id])));
             fclose($file);
             return delete_by_query($this->data, ["id" => $id]);
         }
@@ -151,9 +142,74 @@ class Polecat implements JSON_DB
             return $this;
         } else {
             $file = fopen($this->db_path . '/' . '.json', 'w');
-            fwrite($file, json_encode(update_by_query($this->data, $query, $update)));
+            fwrite($file, json_encode($this->updateByQuery($this->data, $query, $update)));
             fclose($file);
             return $this;
         }
+    }
+
+    private function findByQuery(array $data, array $query):array {
+        $arr = [];
+        for ($i = 0; $i < count($data); $i++) {
+            foreach ($data[$i] as $key => $value) {
+                foreach ($query as $query_key => $query_value) {
+                if($key == $query_key && $value ==  $query_value){
+                    array_push($arr, $data[$i]);
+                }
+            }
+            
+        }
+        }
+        return $arr;
+    
+    }
+    private function deleteByQuery(array $data, array $query):array  {
+        $arr = $data;
+        for ($i = 0; $i < count($data); $i++) {
+            foreach ($data[$i] as $key => $value) {
+                foreach ($query as $query_key => $query_value) {
+                if($key == $query_key && $value ==  $query_value){
+                    unset($arr[$i]);
+                } 
+             }
+            
+            }
+        }
+    
+        return array_values($arr);
+    
+    }
+
+    private function updateByQuery(array $data, array $query, array $update):array{
+        $arr = $data;
+        for ($i = 0; $i < count($data); $i++) {
+            foreach ((array) $data[$i] as $key => $value) {
+                foreach ($query as $query_key => $query_value) {
+                if($key == $query_key && $value ==  $query_value){
+                    $arr[$i] = array_replace((array)$arr[$i], $update);
+             
+                } 
+             }
+            
+            }
+        }
+        return $arr;
+    
+    }
+    private function openFileDecodeJson(string $file_path): array | null {
+        $data = file_get_contents($file_path);
+    
+        if ($data === false) {
+      
+        }
+        
+        $decoded_data = json_decode($data);
+        if ($decoded_data === null) {
+            $json_error = json_last_error_msg();
+         
+            print  $json_error;
+        }
+        
+        return $decoded_data;
     }
 }
