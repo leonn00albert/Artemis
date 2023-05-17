@@ -17,6 +17,7 @@ An Express.js like router for php
 [![GitHub](https://img.shields.io/github/license/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/leonn00albert/Artemis/blob/master/LICENSE)
 
 </div>
+
 ## Table of Contents
 
 - [Features](#features)
@@ -64,3 +65,7 @@ Start local server in terminal
 ```shell
 php -S localocalhost:8000
 ```
+## License 
+MIT License
+
+Copyright (c) 2023 leonn00albert
