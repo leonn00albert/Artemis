@@ -5,6 +5,10 @@
   "license": "proprietary",
   "authors": [
     {
+      "name": "Leon Albert",
+      "email": "email@example.com"
+    },
+    {
       "name": "hennadii.shvedko",
       "email": "email@example.com"
     }
