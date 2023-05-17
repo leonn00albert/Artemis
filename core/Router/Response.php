@@ -6,32 +6,62 @@ class Response
 {
     public $base_url = "views/";
 
+    /**
+     * @param string $input
+     * 
+     * @return [type]
+     */
     public function send(string $input)
     {
         echo $input;
     }
 
+    /**
+     * @param string $response_code
+     * 
+     * @return [type]
+     */
     public function status(string $response_code)
     {
         return http_response_code($response_code);
     }
 
+    /**
+     * @param array $arr
+     * 
+     * @return [type]
+     */
     public function json(array $arr)
     {
         echo json_encode($arr);
     }
 
+    /**
+     * @param string $file
+     * 
+     * @return [type]
+     */
     public function render(string $file)
     {
         require($file);
     }
 
+    /**
+     * @param string $path
+     * 
+     * @return [type]
+     */
     public function redirect(string $path)
     {
         header("Location: $path");
         exit;
     }
 
+    /**
+     * @param string $file
+     * 
+     * @return [type]
+     */
     public function download(string $file)
     {
         if (file_exists($file)) {
@@ -51,6 +81,11 @@ class Response
 
     }
 
+    /**
+     * @param string $type
+     * 
+     * @return [type]
+     */
     private function type(string $type)
     {
         switch ($type) {
