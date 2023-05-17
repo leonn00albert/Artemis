@@ -1,5 +1,5 @@
 <?php
-
+namespace Artemis\Core;
 /**
  * Handle form validation and sanatize inputs
  */

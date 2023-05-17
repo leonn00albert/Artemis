@@ -83,9 +83,9 @@ class Router
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
-            'path' => $path,
-            'type' => 'GET',
-            'middleware' => $arg,
+            "path" => $path,
+            "type" => "GET",
+            "middleware" => $arg,
         ));
         return $this;
     }
@@ -102,9 +102,9 @@ class Router
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
-            'path' => $path,
-            'type' => 'POST',
-            'middleware' => $arg,
+            "path" => $path,
+            "type" => "POST",
+            "middleware" => $arg,
         ));
         return $this;
     }
@@ -121,9 +121,9 @@ class Router
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
-            'path' => $path,
-            'type' => 'DELETE',
-            'middleware' => $arg,
+            "path" => $path,
+            "type" => "DELETE",
+            "middleware" => $arg,
         ));
         return $this;
     }
@@ -140,9 +140,9 @@ class Router
         $this->request = new Request();
         $this->response = new Response();
         array_push($this->routes, array(
-            'path' => $path,
-            'type' => 'PUT',
-            'middleware' => $arg,
+            "path" => $path,
+            "type" => "PUT",
+            "middleware" => $arg,
         ));
         return $this;
     }
@@ -161,7 +161,7 @@ class Router
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
 
-            if ($route['type'] == $_SERVER["REQUEST_METHOD"]) {
+            if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
                 if (Utils::hasParams($route)) {
                     list($path, $lastSegment) = Utils::splitUrl($route["path"]);
                     list($second_path, $second_lastSegment) = Utils::splitUrl($parsed["path"]);
@@ -176,7 +176,7 @@ class Router
                     }
                 }
 
-                if ($route["path"] === $parsed['path']) {
+                if ($route["path"] === $parsed["path"]) {
                     foreach ($route["middleware"] as $controller) {
                         $controller($this->request, $this->response);
                     }
@@ -193,7 +193,6 @@ class Router
                 $controller($this->request, $this->response);
             }
         }
-
 
         $callback();
         unset($this->response);
