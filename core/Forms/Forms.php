@@ -6,14 +6,14 @@ class Forms
     public function __construct() {
         $this->sanatize = function ($req, $res) {
             foreach($req->body() as $key => $value) {
-                $req->sanatized[$key] = $this->check_input($value);
+                $req->sanatized[$key] = $this->checkInput($value);
      
             }
     
         };
     }
 
-   private function check_input($data) {
+   private function checkInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlentities($data);
