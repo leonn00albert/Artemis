@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Handle form validation and sanatize inputs
+ */
 class Forms
 {
     public $sanatize;
@@ -13,6 +16,11 @@ class Forms
         };
     }
 
+   /**
+    * @param mixed $data
+    * 
+    * @return [type]
+    */
    private function checkInput($data) {
         $data = trim($data);
         $data = stripslashes($data);
