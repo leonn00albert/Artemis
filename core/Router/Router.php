@@ -1,6 +1,6 @@
 <?php
 
-namespace Artemis\Core\Router;
+namespace Artemis\Core;
 
 use Exception;
 use Artemis\Core\Router\Response;

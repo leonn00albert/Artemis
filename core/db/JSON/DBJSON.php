@@ -1,9 +1,9 @@
 <?php
 
-namespace Artemis\Core\DB\JSON;
+namespace Artemis\Core\DataBases;
 
 
-require_once('functions.php');
+
 
 interface JSON_DB
 {
@@ -28,8 +28,8 @@ class DBJSON implements JSON_DB
             mkdir($name);
         }
         $this->db_path = "./" . $name;
-        if (is_file($name . '/' . '.json')) {
-            $this->data = $this->openFileDecodeJson($this->db_name . '/' . '.json');
+        if (is_file($name . "/" . ".json")) {
+            $this->data = $this->openFileDecodeJson($this->db_name . "/" . ".json");
         }
     }
 
@@ -72,8 +72,8 @@ class DBJSON implements JSON_DB
     function deleteMany(array $query): array
     {
         if ($query === []) {
-            if (file_exists($this->db_path . '/' . '.json')) {
-                unlink($this->db_path . '/' . '.json');
+            if (file_exists($this->db_path . "/" . ".json")) {
+                unlink($this->db_path . "/" . ".json");
                 return [];
             }
 
@@ -90,7 +90,7 @@ class DBJSON implements JSON_DB
             return ["id" => uniqid(), ...$x];
         }, $arr));
 
-        $file = fopen($this->db_path . '/' . '.json', 'w');
+        $file = fopen($this->db_path . "/" . ".json", "w");
         if (!$file) {
             return false;
         }
@@ -128,7 +128,7 @@ class DBJSON implements JSON_DB
         if ($id === []) {
             return $this;
         } else {
-            $file = fopen($this->db_path . '/' . '.json', 'w');
+            $file = fopen($this->db_path . "/" . ".json", "w");
             fwrite($file, json_encode($this->updateByQuery($this->data, ["id" => $id], $update)));
             fclose($file);
             return update_by_query($this->data, ["id" => $id], $update);
@@ -145,7 +145,7 @@ class DBJSON implements JSON_DB
         if ($id === []) {
             return $this;
         } else {
-            $file = fopen($this->db_path . '/' . '.json', 'w');
+            $file = fopen($this->db_path . "/" . ".json", "w");
             fwrite($file, json_encode($this->deleteByQuery($this->data, ["id" => $id])));
             fclose($file);
             return delete_by_query($this->data, ["id" => $id]);
@@ -163,7 +163,7 @@ class DBJSON implements JSON_DB
         if ($query === []) {
             return $this;
         } else {
-            $file = fopen($this->db_path . '/' . '.json', 'w');
+            $file = fopen($this->db_path . "/" . ".json", "w");
             fwrite($file, json_encode($this->updateByQuery($this->data, $query, $update)));
             fclose($file);
             return $this;
