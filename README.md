@@ -18,14 +18,28 @@ An Express.js like router for php
 
 </div>
 
-Get started:
+## Table of Contents
 
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
+## Features
+- Routing: Artemis provides a simple and intuitive routing mechanism. It allows you to define routes based on HTTP methods and URL patterns, making it easy to handle different endpoints and HTTP operations.
+- Middleware: Artemis uses middleware functions to handle various aspects of request/response processing. Middleware functions can be used for tasks such as logging, authentication, error handling, parsing request bodies, and more. Express provides a rich ecosystem of built-in middleware as well as the ability to create custom middleware.
+- Extensibility: Artemis is highly extensible, allowing you to add additional functionality through third-party middleware and librarie
+## Installation
 ```shell
 mkdir example
 cd example
 touch index.php
 composer require  wdlndfx/artemis:dev-master
 ```
+
+## Usage
+Quick Start:
+
 
 inside index.php ->
 
@@ -52,3 +66,7 @@ Start local server in terminal
 ```shell
 php -S localocalhost:8000
 ```
+## License 
+MIT License
+
+Copyright (c) 2023 leonn00albert
