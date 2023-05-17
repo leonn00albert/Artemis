@@ -17,15 +17,27 @@ An Express.js like router for php
 [![GitHub](https://img.shields.io/github/license/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/leonn00albert/Artemis/blob/master/LICENSE)
 
 </div>
+## Table of Contents
 
-Get started:
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
 
+## Features
+- List the key features or functionalities of the project.
+
+## Installation
 ```shell
 mkdir example
 cd example
 touch index.php
 composer require  wdlndfx/artemis:dev-master
 ```
+
+## Usage
+Quick Start:
+
 
 inside index.php ->
 
