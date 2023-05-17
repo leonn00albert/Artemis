@@ -23,7 +23,7 @@ Get started:
 ```shell
 mkdir example
 cd example
-code index.php
+touch index.php
 composer require  wdlndfx/artemis:dev-master
 ```
 
@@ -31,8 +31,10 @@ inside index.php ->
 
 ```php
 <?php
-require_once __DIR__ . '/vendor/wdlndfx/artemis/src/artemis.php';
-$app = new Artemis();
+require_once __DIR__.'/vendor/autoload.php';
+
+use Artemis\Core\Router
+$app = Router::getInstance();
 
 $app->get("/", function($req,$res){
     $res->send("<h1>Hello World!</h1>");

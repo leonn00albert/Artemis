@@ -1,10 +1,9 @@
 <?php
 
-namespace Artemis\Core\DB;
+namespace Artemis\Core;
 
-use Artemis\Core\DB\JSON\Polecat;
 
-include "Artemis\db\JSON\db_json.php";
+use Artemis\Core\DataBases\DBJSON;
 
 /// make singleton
 // make factory
@@ -15,7 +14,7 @@ class DB
     function __construct($db_type, $name)
     {
         $this->con = match ($db_type) {
-            "JSON" => new Polecat($name)
+            "JSON" => new DBJSON($name)
         };
     }
 }
