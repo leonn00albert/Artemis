@@ -102,6 +102,11 @@ class DBJSON implements JSON_DB
         return $this->data;
     }
 
+    /**
+     * @param string $id
+     * 
+     * @return [type]
+     */
     function findById(string $id)
     {
         if (!$id) {
@@ -112,6 +117,12 @@ class DBJSON implements JSON_DB
         }
     }
 
+    /**
+     * @param string $id
+     * @param array $update
+     * 
+     * @return array
+     */
     function updateById(string $id, array $update): array
     {
         if ($id === []) {
@@ -124,6 +135,11 @@ class DBJSON implements JSON_DB
         }
     }
 
+    /**
+     * @param string $id
+     * 
+     * @return [type]
+     */
     function deleteById(string $id)
     {
         if ($id === []) {
@@ -136,6 +152,12 @@ class DBJSON implements JSON_DB
         }
     }
 
+    /**
+     * @param array $query
+     * @param array $update
+     * 
+     * @return [type]
+     */
     function updateMany(array $query, array $update)
     {
         if ($query === []) {
@@ -148,6 +170,12 @@ class DBJSON implements JSON_DB
         }
     }
 
+    /**
+     * @param array $data
+     * @param array $query
+     * 
+     * @return array
+     */
     private function findByQuery(array $data, array $query):array {
         $arr = [];
         for ($i = 0; $i < count($data); $i++) {
@@ -163,6 +191,12 @@ class DBJSON implements JSON_DB
         return $arr;
     
     }
+    /**
+     * @param array $data
+     * @param array $query
+     * 
+     * @return array
+     */
     private function deleteByQuery(array $data, array $query):array  {
         $arr = $data;
         for ($i = 0; $i < count($data); $i++) {
@@ -180,6 +214,13 @@ class DBJSON implements JSON_DB
     
     }
 
+    /**
+     * @param array $data
+     * @param array $query
+     * @param array $update
+     * 
+     * @return array
+     */
     private function updateByQuery(array $data, array $query, array $update):array{
         $arr = $data;
         for ($i = 0; $i < count($data); $i++) {
@@ -196,6 +237,11 @@ class DBJSON implements JSON_DB
         return $arr;
     
     }
+    /**
+     * @param string $file_path
+     * 
+     * @return array
+     */
     private function openFileDecodeJson(string $file_path): array | null {
         $data = file_get_contents($file_path);
     
