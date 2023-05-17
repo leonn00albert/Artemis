@@ -14,7 +14,7 @@ An Express.js like router for php
     
 ![GitHub repo size](https://img.shields.io/github/repo-size/leonn00albert/Artemis)
 [![GitHub contributors](https://img.shields.io/github/contributors/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/leonn00albert/Artemis/graphs/contributors)
-[![GitHub](https://img.shields.io/github/license/leonn00albert/Artemis?cacheSeconds=3600)](https://github.com/leonn00albert/Artemis/blob/master/LICENSE)
+[![GitHub](https://img.shields.io/github/license/leonn00albert/Artemis?cacheSeconds=3600)](MIT)
 
 </div>
 
