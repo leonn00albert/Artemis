@@ -35,14 +35,14 @@ class Response
     public function download(string $file)
     {
         if (file_exists($file)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=' . basename($file));
-            header('Content-Transfer-Encoding: binary');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize($file));
+            header("Content-Description: File Transfer");
+            header("Content-Type: application/octet-stream");
+            header("Content-Disposition: attachment; filename=" . basename($file));
+            header("Content-Transfer-Encoding: binary");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: public");
+            header("Content-Length: " . filesize($file));
             ob_clean();
             flush();
             readfile($file);
@@ -51,20 +51,20 @@ class Response
 
     }
 
-    public function type(string $type)
+    private function type(string $type)
     {
         switch ($type) {
             case "html":
-                header('Content-Type: text/html');
+                header("Content-Type: text/html");
                 break;
             case ".html":
-                header('Content-Type: text/html');
+                header("Content-Type: text/html");
                 break;
             case "json":
-                header('Content-Type: application/json');
+                header("Content-Type: application/json");
                 break;
             case "application/json":
-                header('Content-Type: application/json');
+                header("Content-Type: application/json");
                 break;
             default:
                 header("Content-Type: " . $type);
