@@ -2,9 +2,6 @@
 
 namespace Artemis\Core\DataBases;
 
-
-
-
 interface JSON_DB
 {
     public function create(array $arr);
