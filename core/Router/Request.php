@@ -31,6 +31,8 @@ class Request
             $query = $parsed["query"];
             parse_str($query, $params);
             return $params;
+        }else {
+            return [];
         }
 
     }
