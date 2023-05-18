@@ -1,5 +1,5 @@
 <?php
-namespace Artemis\Core;
+namespace Artemis\Core\Forms;
 /**
  * Handle form validation and sanatize inputs
  */
@@ -8,11 +8,13 @@ class Forms
     public $sanatize;
     public function __construct() {
         $this->sanatize = function ($req, $res) {
-            foreach($req->body() as $key => $value) {
-                $req->sanatized[$key] = $this->checkInput($value);
-     
+            if(count($req->body()) > 0) {
+                foreach($req->body() as $key => $value) {
+                    $req->sanatized[$key] = $this->checkInput($value);
+                }
+        
             }
-    
+        
         };
     }
 

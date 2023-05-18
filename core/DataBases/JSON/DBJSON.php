@@ -1,6 +1,8 @@
 <?php
 
-namespace Artemis\Core\DataBases;
+namespace Artemis\Core\DataBases\JSON;
+
+use Exception;
 
 interface JSON_DB
 {
@@ -66,7 +68,7 @@ class DBJSON implements JSON_DB
      *
      * @return array
      */
-    function deleteMany(array $query): array
+    function deleteMany(array $query)
     {
         if ($query === []) {
             if (file_exists($this->db_path . "/" . ".json")) {
@@ -83,10 +85,8 @@ class DBJSON implements JSON_DB
      */
     function create(array $arr): array
     {
-        $this->data = array_merge((array)$this->data, array_map(function ($x) {
-            return ["id" => uniqid(), ...$x];
-        }, $arr));
-
+        array_push($this->data,["id" => uniqid(), ...$arr] );
+     
         $file = fopen($this->db_path . "/" . ".json", "w");
         if (!$file) {
             return false;
@@ -94,7 +94,6 @@ class DBJSON implements JSON_DB
 
         $json_data = json_encode($this->data);
         fwrite($file, $json_data);
-
         fclose($file);
         return $this->data;
     }
@@ -128,7 +127,7 @@ class DBJSON implements JSON_DB
             $file = fopen($this->db_path . "/" . ".json", "w");
             fwrite($file, json_encode($this->updateByQuery($this->data, ["id" => $id], $update)));
             fclose($file);
-            return update_by_query($this->data, ["id" => $id], $update);
+            return $this->updateByQuery($this->data, ["id" => $id], $update);
         }
     }
 
@@ -145,7 +144,7 @@ class DBJSON implements JSON_DB
             $file = fopen($this->db_path . "/" . ".json", "w");
             fwrite($file, json_encode($this->deleteByQuery($this->data, ["id" => $id])));
             fclose($file);
-            return delete_by_query($this->data, ["id" => $id]);
+            return $this->deleteByQuery($this->data, ["id" => $id]);
         }
     }
 
@@ -253,6 +252,6 @@ class DBJSON implements JSON_DB
             print  $json_error;
         }
         
-        return $decoded_data;
+        return (array) $decoded_data;
     }
 }

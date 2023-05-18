@@ -1,6 +1,6 @@
 <?php
 
-namespace Artemis\Core;
+namespace Artemis\Core\Router;
 
 use Exception;
 use Artemis\Core\Router\Response;
@@ -167,7 +167,6 @@ class Router
                     list($second_path, $second_lastSegment) = Utils::splitUrl($parsed["path"]);
 
                     if ($path == $second_path) {
-
                         $this->request->route = $route;
                         foreach ($route["middleware"] as $controller) {
                             $controller($this->request, $this->response);

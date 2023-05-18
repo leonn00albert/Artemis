@@ -1,9 +1,8 @@
 <?php
 
-namespace Artemis\Core;
+namespace Artemis\Core\DataBases;
 
-
-use Artemis\Core\DataBases\DBJSON;
+use Artemis\Core\DataBases\JSON\DBJSON;
 
 /// make singleton
 // make factory
