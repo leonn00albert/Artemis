@@ -86,7 +86,7 @@ class Response
      * 
      * @return [type]
      */
-    private function type(string $type)
+    public function getContentType(string $type)
     {
         switch ($type) {
             case "html":
