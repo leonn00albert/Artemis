@@ -14,7 +14,8 @@
     }
   ],
   "require-dev": {
-    "phpstan/phpstan": "^1.10"
+    "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "10"
   },
   "autoload": {
     "psr-4": {
@@ -24,6 +25,9 @@
   "autoload-dev": {
     "psr-4": {
       "Atemis\\Test\\": "tests/"
-    }
+    },
+    "classmap": [
+      "tests/testArtemis.php"
+  ]
   }
 }
