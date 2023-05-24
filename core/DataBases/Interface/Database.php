@@ -1,5 +1,5 @@
 <?php
-namespace Artemis\Core\DataBases;
+namespace Artemis\Core\DataBases\Interface;
 
 interface Database
 {  
@@ -11,9 +11,5 @@ interface Database
 
 }
 
-abstract class DB {
-     abstract function __construct(string $name);
-
-}
 
 ?>

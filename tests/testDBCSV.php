@@ -15,8 +15,8 @@ final class testDBCSV extends TestCase
         unlink("test.csv");
         $db =  DBCSV::getInstance("test");
         $id =  time();
-        $header = $db->create(["testheader"]);
-        $result = $db->create([ "test" . $id]);
+        $header = $db->create(["testheader", "testheader2"]);
+        $result = $db->create([ "test" . $id,  "test" . $id * 2]);
         $this->assertSame("testheader", $header[0]);
         $this->assertSame("test" . $id, $result[0]);
  

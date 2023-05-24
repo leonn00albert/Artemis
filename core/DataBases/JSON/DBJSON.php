@@ -2,9 +2,9 @@
 
 namespace Artemis\Core\DataBases\JSON;
 
-use Exception;
-use Artemis\Core\DataBases\Database;
-use Artemis\Core\DataBases\DB;
+
+use Artemis\Core\DataBases\Abstract\AbstractDB;
+use Artemis\Core\DataBases\Interface\Database;
 
 //make singleton 
 
@@ -12,20 +12,18 @@ use Artemis\Core\DataBases\DB;
 
 // add login and auth 
 
-
-
 /**
  * A JSON based DB using Mongoose style syntax
  */
 
-class DBJSON extends DB implements Database
+class DBJSON extends AbstractDB implements Database
 {
-    private static $instance;
+    static  $instance;
     public string $db_name = "";
     public string $db_path = "";
     public $data = [];
 
-    private function __construct($name)
+    protected function __construct($name)
     {
         $this->db_name = $name;
         if (!is_dir($name)) {

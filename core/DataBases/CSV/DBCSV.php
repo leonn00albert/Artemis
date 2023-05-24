@@ -2,16 +2,17 @@
 
 namespace Artemis\Core\DataBases\CSV;
 
-use Artemis\Core\DataBases\Database;
+use Artemis\Core\DataBases\Abstract\AbstractDB;
+use Artemis\Core\DataBases\Interface\Database;
 
 
-class DBCSV implements Database
+class DBCSV extends AbstractDB implements Database
 {
-    private static $instance;
+    static  $instance;
     private $fileHandle;
     private string $filePath = "";
 
-    private function __construct($filename)
+    protected function __construct($filename)
     {
         $this->fileHandle = fopen($filename . ".csv", "a+");
         $this->filePath = $filename . ".csv";

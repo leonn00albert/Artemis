@@ -4,15 +4,14 @@ namespace Artemis\Core\DataBases;
 
 use Artemis\Core\DataBases\JSON\DBJSON;
 use Artemis\Core\DataBases\CSV\DBCSV;
+use Artemis\Core\DataBases\Interface\Database;
+
 use Exception;
-/// make singleton
-// make factory
 
 
-class DataBaseFactory
+class DB
 {
-    public $con;
-    public static function createVehicle(string $type, string $name): Database
+    public static function new(string $type, string $name): Database
     {
         switch ($type) {
             case 'JSON':
