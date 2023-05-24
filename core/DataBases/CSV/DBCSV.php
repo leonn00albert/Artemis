@@ -1,7 +1,9 @@
 <?php
+
 namespace Artemis\Core\DataBases\CSV;
-use Exception;
+
 use Artemis\Core\DataBases\Database;
+
 
 class DBCSV implements Database
 {
@@ -24,57 +26,54 @@ class DBCSV implements Database
     }
 
     public function create($data)
-    {   
-        $list = [];
-        foreach($data as $key => $value){
-            array_push($list,[$key, $value]);
-        }
-        foreach ($list as $line) {
-            fputcsv($this->fileHandle, $line);
-          }
-       
+    {
+        fputcsv($this->fileHandle, array_values($data));
+        return $data;
     }
 
-    function find(array $query):array
+
+    function find(array $query): array
     {
         $tmp = [];
         $headers = [];
-        $file = fopen("database.csv", 'r'); 
+        $file = fopen($this->filePath, 'r');
         if ($file) {
-            if($query = []) {
-                while (($row = fgetcsv($file)) !== false) {
-                    $tmp[] = $row; 
-                }
-        
+
+            while (($row = fgetcsv($file)) !== false) {
+                $tmp[] = $row;
             }
             fclose($file);
-            for ($i = 0; $i < count($tmp); $i++){
-                if($i === 0 ){
 
-                }else {
-                    array_push($tmp, array_combine($headers,$row));
-                }
-             
+
+            if (count($tmp) > 0) {
+                $headers = $tmp[0];
+                unset($tmp[0]);
             }
-        
+
+            $result = [];
+            foreach ($tmp as $row) {
+
+                $result[] = array_combine($headers, array_values($row));
+            }
+
+            return $result;
         }
+
         return $tmp;
     }
 
-
-    public function findById(string $query) 
+    public function findById(string $query)
     {
-
     }
     public function deleteById(string $id)
     {
-
     }
     public function updateById(string $id, array $update): array
     {
-
+        return [];
     }
-    public function deleteMany(){
+    public function deleteMany()
+    {
         unlink("database.csv");
     }
 

@@ -14,7 +14,7 @@ final class testDBJSON extends TestCase
         global $id;
         unlink("test/.json");
         rmdir("test");
-        $db = new DBJSON("test");
+        $db = DBJSON::getInstance("test");
         $id =  time();
         $result = $db->create(["test" => "test" . $id]);
         $this->assertSame("test" . $id, $result[0]["test"]);
@@ -25,7 +25,7 @@ final class testDBJSON extends TestCase
     public function testFind(): void
     {    
         global $id;
-        $db = new DBJSON("test");
+        $db = DBJSON::getInstance("test");
    
         $result = $db->find([]);
         $result[0] = (array) $result[0];
@@ -36,7 +36,7 @@ final class testDBJSON extends TestCase
     public function testFindByQuery(): void
     {    
         global $id;
-        $db = new DBJSON("test");
+        $db = DBJSON::getInstance("test");
         $result = $db->find(["test" => "test" . $id ]);
         $result[0] = (array) $result[0];
         $this->assertSame("test" . $id, $result[0]["test"]);

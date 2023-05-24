@@ -16,9 +16,9 @@ class DataBaseFactory
     {
         switch ($type) {
             case 'JSON':
-                return new DBJSON($name);
+                return  DBJSON::getInstance($name);
             case 'CSV':
-                return new DBCSV($name);
+                return  DBCSV::getInstance($name);
             default:
                 throw new Exception("Invalid db type: " . $type);
         }

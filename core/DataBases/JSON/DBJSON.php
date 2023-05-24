@@ -1,8 +1,11 @@
 <?php
 
 namespace Artemis\Core\DataBases\JSON;
+
 use Exception;
 use Artemis\Core\DataBases\Database;
+use Artemis\Core\DataBases\DB;
+
 //make singleton 
 
 // add encryption
@@ -15,13 +18,14 @@ use Artemis\Core\DataBases\Database;
  * A JSON based DB using Mongoose style syntax
  */
 
-class DBJSON implements Database
+class DBJSON extends DB implements Database
 {
+    private static $instance;
     public string $db_name = "";
     public string $db_path = "";
     public $data = [];
 
-    function __construct(string $name)
+    private function __construct($name)
     {
         $this->db_name = $name;
         if (!is_dir($name)) {
@@ -33,12 +37,22 @@ class DBJSON implements Database
         }
     }
 
+    public static function getInstance($name)
+    {
+        if (!self::$instance) {
+            self::$instance = new DBJSON($name);
+        }
+        return self::$instance;
+    }
+
+
+
     /**
      * @param array $query
      *
      * @return [type]
      */
-    function find(array $query):array
+    function find(array $query): array
     {
         if ($query === []) {
 
@@ -76,7 +90,6 @@ class DBJSON implements Database
                 unlink($this->db_path . "/" . ".json");
                 return [];
             }
-
         }
     }
     /**
@@ -86,8 +99,8 @@ class DBJSON implements Database
      */
     function create(array $arr): array
     {
-        array_push($this->data,["id" => uniqid(), ...$arr] );
-     
+        array_push($this->data, ["id" => uniqid(), ...$arr]);
+
         $file = fopen($this->db_path . "/" . ".json", "w");
         if (!$file) {
             return false;
@@ -173,20 +186,19 @@ class DBJSON implements Database
      * 
      * @return array
      */
-    private function findByQuery(array $data, array $query):array {
+    private function findByQuery(array $data, array $query): array
+    {
         $arr = [];
         for ($i = 0; $i < count($data); $i++) {
             foreach ($data[$i] as $key => $value) {
                 foreach ($query as $query_key => $query_value) {
-                if($key == $query_key && $value ==  $query_value){
-                    array_push($arr, $data[$i]);
+                    if ($key == $query_key && $value ==  $query_value) {
+                        array_push($arr, $data[$i]);
+                    }
                 }
             }
-            
-        }
         }
         return $arr;
-    
     }
     /**
      * @param array $data
@@ -194,21 +206,20 @@ class DBJSON implements Database
      * 
      * @return array
      */
-    private function deleteByQuery(array $data, array $query):array  {
+    private function deleteByQuery(array $data, array $query): array
+    {
         $arr = $data;
         for ($i = 0; $i < count($data); $i++) {
             foreach ($data[$i] as $key => $value) {
                 foreach ($query as $query_key => $query_value) {
-                if($key == $query_key && $value ==  $query_value){
-                    unset($arr[$i]);
-                } 
-             }
-            
+                    if ($key == $query_key && $value ==  $query_value) {
+                        unset($arr[$i]);
+                    }
+                }
             }
         }
-    
+
         return array_values($arr);
-    
     }
 
     /**
@@ -218,41 +229,39 @@ class DBJSON implements Database
      * 
      * @return array
      */
-    private function updateByQuery(array $data, array $query, array $update):array{
+    private function updateByQuery(array $data, array $query, array $update): array
+    {
         $arr = $data;
         for ($i = 0; $i < count($data); $i++) {
             foreach ((array) $data[$i] as $key => $value) {
                 foreach ($query as $query_key => $query_value) {
-                if($key == $query_key && $value ==  $query_value){
-                    $arr[$i] = array_replace((array)$arr[$i], $update);
-             
-                } 
-             }
-            
+                    if ($key == $query_key && $value ==  $query_value) {
+                        $arr[$i] = array_replace((array)$arr[$i], $update);
+                    }
+                }
             }
         }
         return $arr;
-    
     }
     /**
      * @param string $file_path
      * 
      * @return array
      */
-    private function openFileDecodeJson(string $file_path): array | null {
+    private function openFileDecodeJson(string $file_path): array | null
+    {
         $data = file_get_contents($file_path);
-    
+
         if ($data === false) {
-      
         }
-        
+
         $decoded_data = json_decode($data);
         if ($decoded_data === null) {
             $json_error = json_last_error_msg();
-         
+
             print  $json_error;
         }
-        
+
         return (array) $decoded_data;
     }
 }

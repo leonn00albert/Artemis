@@ -3,7 +3,6 @@ namespace Artemis\Core\DataBases;
 
 interface Database
 {  
-    public function __construct(string $name);
     public function create(array $arr);
     public function find(array $query):array;
     public function findById(string $query);
@@ -12,6 +11,9 @@ interface Database
 
 }
 
+abstract class DB {
+     abstract function __construct(string $name);
 
+}
 
 ?>
