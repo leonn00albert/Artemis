@@ -1,20 +1,21 @@
 <?php
 
 namespace Artemis\Core\DataBases\JSON;
-
 use Exception;
+use Artemis\Core\DataBases\Database;
+//make singleton 
 
-interface JSON_DB
-{
-    public function create(array $arr);
+// add encryption
 
-    public function find(array $query);
-}
+// add login and auth 
+
+
 
 /**
  * A JSON based DB using Mongoose style syntax
  */
-class DBJSON implements JSON_DB
+
+class DBJSON implements Database
 {
     public string $db_name = "";
     public string $db_path = "";
@@ -37,7 +38,7 @@ class DBJSON implements JSON_DB
      *
      * @return [type]
      */
-    function find(array $query)
+    function find(array $query):array
     {
         if ($query === []) {
 
