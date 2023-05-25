@@ -28,17 +28,19 @@ $app->get("/method",function($req,$res){
 });
 
 $app->get("/secure",function($req,$res){
-    $res->send(json_encode($req->secure));
+    $res->send((string) $req->secure());
 
 });
 
-$app->get("/body",function($req,$res){
+$app->post("/body",function($req,$res){
+    $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
     $res->json($req->body());
 
 });
 
 $app->get("/ip",function($req,$res){
-    $res->send($req->ip());
+
+    $res->send($req->ip()["ip"]);
 
 });
 
@@ -55,6 +57,7 @@ $app->get("/params/:id",function($req,$res){
 
 
 $app->get("/test/hostname",function($req,$res){
+
     $res->send($req->hostname());
 
 });
