@@ -161,7 +161,6 @@ class Router
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
-                //check if route has param
                 if(str_contains($route["path"],":")){
               
                     $posOne = strpos($route['path'],":");
@@ -179,14 +178,27 @@ class Router
                     }
                     $param_value = substr($parse_string,0,$posTwo);
                     $new_route = str_replace(":" .$param,$param_value,$route["path"]);
-               
-                    if($new_route === $parsed["path"]){
-                        $this->request->params = [$param => $param_value];
-                        foreach ($route["middleware"] as $controller) {
-                            $controller($this->request, $this->response);
                     
+                    if($new_route === $parsed["path"]){
+
+                        $unique = function ($new_route) {
+                            foreach ($this->routes as $r) {
+                                if($r["path"] === $new_route) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        };
+                        if($unique($new_route)) {
+                            $this->request->params = [$param => $param_value];
+                            foreach ($route["middleware"] as $controller) {
+                                $controller($this->request, $this->response);
+                        
+                            }
+                            $route_exsist = true;
                         }
-                        $route_exsist = true;
+                        
+                 
                     }
 
                 }

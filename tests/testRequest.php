@@ -9,7 +9,7 @@ final class testRequest extends TestCase
     {
         $request = file_get_contents("http://localhost:8000/protocol");
       
-        $this->assertSame('HTTP/1.1', trim($request));
+        $this->assertSame("HTTP/1.1", trim($request));
 
     }
 
@@ -17,7 +17,7 @@ final class testRequest extends TestCase
     {
         $request = file_get_contents("http://localhost:8000/test/hostname");
       
-        $this->assertSame('localhost:8000', trim($request));
+        $this->assertSame("localhost:8000", trim($request));
 
     }
 
@@ -25,16 +25,35 @@ final class testRequest extends TestCase
     {
         $request = file_get_contents("http://localhost:8000/method");
       
-        $this->assertSame('GET', trim($request));
+        $this->assertSame("GET", trim($request));
 
     }
 
 
     public function testReqBody(): void
     {
-        $request = file_get_contents("http://localhost:8000/body?id=1&test=true");
-      
-        $this->assertSame('{"id":"1","test":"true"}', trim($request));
+        $curl = curl_init();
+
+        $url = "http://localhost:8000/body";
+        $data = array(
+            'id' => '1',
+            'test' => 'true'
+        );
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($curl);
+
+        if(curl_errno($curl)){
+            $error = curl_error($curl);
+    
+        }
+
+        curl_close($curl);
+
+        // Process the response
+        $this->assertSame("{\"id\":\"1\",\"test\":\"true\"}", trim($response));
 
     }
 
@@ -42,7 +61,7 @@ final class testRequest extends TestCase
     {
         $request = file_get_contents("http://localhost:8000/ip");
       
-        $this->assertSame('127.0.0.1', trim($request));
+        $this->assertSame("::1", trim($request));
 
     }
 
@@ -51,24 +70,22 @@ final class testRequest extends TestCase
     {
         $request = file_get_contents("http://localhost:8000/path");
       
-        $this->assertSame('/path', trim($request));
+        $this->assertSame("/path", trim($request));
 
     }
     public function testReqSecure(): void
     {
         $request = file_get_contents("http://localhost:8000/secure");
       
-        $this->assertSame('null', trim($request));
+        $this->assertSame("", trim($request));
 
     }
     public function testReqParams(): void
     {
         $request = file_get_contents("http://localhost:8000/test/1");
       
-        $this->assertSame('{"id":"1"}', trim($request));
+        $this->assertSame("{\"id\":\"1\"}", trim($request));
 
     }
 
 }
-
-?>

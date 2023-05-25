@@ -13,14 +13,26 @@ class Request
      * @return [type]
      */
 
-     //add support for json and form data 
+    //add support for json and form data 
     public function body()
     {
-        $request_body = file_get_contents("php://input");
-        $data = json_decode($request_body, true); // true to convert to associative array
 
-        return $data;
+        $contentType = $_SERVER["CONTENT_TYPE"];
+  
+        if ($contentType === "application/json") {
+            $request_body = file_get_contents("php://input");
+            $data = json_decode($request_body, true); // true to convert to associative array
+    
+            return $data;
+  
+        } elseif ($contentType === "application/x-www-form-urlencoded") {
+            // Request contains form data
+            $formData = $_POST;
+            return $formData;
+        } else {
 
+        }
+ 
     }
 
     /**
@@ -33,10 +45,9 @@ class Request
             $query = $parsed["query"];
             parse_str($query, $params);
             return $params;
-        }else {
+        } else {
             return [];
         }
-
     }
 
     /**
@@ -73,8 +84,8 @@ class Request
      */
     public function ip(): array
     {
-        $ipAddress = $_SERVER['REMOTE_ADDR'];
-        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "No HTTP referer";
+        $ipAddress = $_SERVER["REMOTE_ADDR"];
+        $referer = isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : "No HTTP referer";
         return  ["ip" => $ipAddress, "referer" => $referer];
     }
 
@@ -109,12 +120,7 @@ class Request
      */
     public function secure(): bool
     {
-        $secure = $_SERVER["HTTPS"];
+        $secure = isset($_SERVER["HTTPS"]);
         return $secure;
     }
-
-
 }
-
-
-?>
