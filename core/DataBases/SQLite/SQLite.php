@@ -97,6 +97,6 @@ class SQLite extends AbstractDB implements Database
 
     public function closeDatabase()
     {
-        fclose($this->fileHandle);
+        fclose($this->db->close());
     }
 }

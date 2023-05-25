@@ -56,6 +56,7 @@ class DBJSON extends AbstractDB implements Database
 
             return $this->data;
         } else {
+            
             $result = $this->findByQuery($this->data, $query);
             return $result;
         }
@@ -98,13 +99,19 @@ class DBJSON extends AbstractDB implements Database
     function create(array $arr): array
     {
         array_push($this->data, ["id" => uniqid(), ...$arr]);
+        $key = 'YourEncryptionKey';
+        $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+        $encryptedText = openssl_encrypt(json_encode($this->data), 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        $fileSignature = hash('sha256', $encryptedText);
+        $encryptedTextWithIV = $iv . $encryptedText;
 
         $file = fopen($this->db_path . "/" . ".json", "w");
         if (!$file) {
             return false;
         }
 
-        $json_data = json_encode($this->data);
+
+        $json_data = crypt(json_encode($encryptedTextWithIV),"test");
         fwrite($file, $json_data);
         fclose($file);
         return $this->data;
@@ -248,12 +255,19 @@ class DBJSON extends AbstractDB implements Database
      */
     private function openFileDecodeJson(string $file_path): array | null
     {
-        $data = file_get_contents($file_path);
+        $key = 'YourEncryptionKey';
+        $encryptedTextWithIV = file_get_contents($file_path);
 
-        if ($data === false) {
+        if ($encryptedTextWithIV === false) {
         }
-
-        $decoded_data = json_decode($data);
+    
+        $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+        $iv = substr($encryptedTextWithIV, 0, $ivLength);
+        $encryptedText = substr($encryptedTextWithIV, $ivLength);
+        
+        $decryptedText = openssl_decrypt($encryptedText, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        
+        $decoded_data = json_decode($decryptedText);
         if ($decoded_data === null) {
             $json_error = json_last_error_msg();
 
