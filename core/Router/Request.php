@@ -12,6 +12,8 @@ class Request
     /**
      * @return [type]
      */
+
+     //add support for json and form data 
     public function body()
     {
         $request_body = file_get_contents("php://input");
@@ -65,13 +67,15 @@ class Request
         return $hostname;
     }
 
+
     /**
-     * @return string
+     * @return array
      */
-    public function ip(): string
+    public function ip(): array
     {
-        $ip = $_SERVER["SERVER_ADDR"];
-        return $ip;
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "No HTTP referer";
+        return  ["ip" => $ipAddress, "referer" => $referer];
     }
 
     /**

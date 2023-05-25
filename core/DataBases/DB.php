@@ -3,17 +3,25 @@
 namespace Artemis\Core\DataBases;
 
 use Artemis\Core\DataBases\JSON\DBJSON;
+use Artemis\Core\DataBases\CSV\DBCSV;
+use Artemis\Core\DataBases\Interface\Database;
+use Artemis\Core\DataBases\SQlite\SQLite;
+use Exception;
 
-/// make singleton
-// make factory
+
 class DB
 {
-    public $con;
-
-    function __construct($db_type, $name)
+    public static function new(string $type, string $name ,string $pass=""): Database
     {
-        $this->con = match ($db_type) {
-            "JSON" => new DBJSON($name)
-        };
+        switch ($type) {
+            case 'JSON':
+                return  DBJSON::getInstance($name,$pass);
+            case 'CSV':
+                return  DBCSV::getInstance($name);
+            case 'SQLite':
+                return  SQLite::getInstance($name);
+            default:
+                throw new Exception("Invalid db type: " . $type);
+        }
     }
 }
