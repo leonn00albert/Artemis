@@ -7,8 +7,8 @@ use Artemis\Core\Router\Utils;
 
 class Request
 {
-    public $route = "";
-
+    public $route = [];
+    public $params = [];
     /**
      * @return [type]
      */
@@ -101,13 +101,7 @@ class Request
      */
     public function params(): array
     {
-        if (Utils::hasParams($this->route)) {
-            $parsed = parse_url($_SERVER["REQUEST_URI"]);
-            list($route_path, $route_lastSegment) = Utils::splitUrl($this->route["path"]);
-            list($url_path, $url_lastSegment) = Utils::splitUrl($parsed["path"]);
-            return array(Utils::parseParam($route_lastSegment) => $url_lastSegment);
-        }
-
+        return $this->params;
     }
 
     /**

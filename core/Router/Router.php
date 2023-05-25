@@ -160,21 +160,37 @@ class Router
         $wild_card = [];
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
-
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
-                if (Utils::hasParams($route)) {
-                    list($path, $lastSegment) = Utils::splitUrl($route["path"]);
-                    list($second_path, $second_lastSegment) = Utils::splitUrl($parsed["path"]);
+                //check if route has param
+                if(str_contains($route["path"],":")){
+              
+                    $posOne = strpos($route['path'],":");
+                    $route_string = substr($route["path"],$posOne + 1);
+                    $posTwo = strpos($route_string,"/");
+                    if( $posTwo === false){
+                        $posTwo = strlen($route_string);   
+                    }
+                    $param = substr($route_string,0,$posTwo);
 
-                    if ($path == $second_path) {
-                        $this->request->route = $route;
+                    $parse_string = substr($parsed["path"],$posOne);
+                    $posTwo = strpos($parse_string,"/");
+                    if( $posTwo === false){
+                        $posTwo = strlen($parse_string);   
+                    }
+                    $param_value = substr($parse_string,0,$posTwo);
+                    $new_route = str_replace(":" .$param,$param_value,$route["path"]);
+               
+                    if($new_route === $parsed["path"]){
+                        $this->request->params = [$param => $param_value];
                         foreach ($route["middleware"] as $controller) {
                             $controller($this->request, $this->response);
+                    
                         }
                         $route_exsist = true;
                     }
-                }
 
+                }
+   
                 if ($route["path"] === $parsed["path"]) {
                     foreach ($route["middleware"] as $controller) {
                         $controller($this->request, $this->response);
@@ -191,6 +207,8 @@ class Router
             foreach ($wild_card as $controller) {
                 $controller($this->request, $this->response);
             }
+
+     
         }
 
         $callback();
