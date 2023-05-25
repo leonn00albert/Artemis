@@ -161,8 +161,6 @@ class Router
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
-
-             
                 //check if route has param
                 if(str_contains($route["path"],":")){
               
@@ -174,37 +172,25 @@ class Router
                     }
                     $param = substr($route_string,0,$posTwo);
 
-                    $stringOne = substr($parsed["path"],$posOne);
-                    $posTwo = strpos($stringOne,"/");
+                    $parse_string = substr($parsed["path"],$posOne);
+                    $posTwo = strpos($parse_string,"/");
                     if( $posTwo === false){
-                        $posTwo = strlen($stringOne);   
+                        $posTwo = strlen($parse_string);   
                     }
-                    $replace = substr($stringOne,0,$posTwo);
-
-
-                    $new_route = str_replace(":" .$param,$replace,$route["path"]);
+                    $param_value = substr($parse_string,0,$posTwo);
+                    $new_route = str_replace(":" .$param,$param_value,$route["path"]);
                
-                  
-
                     if($new_route === $parsed["path"]){
-                        $this->request->params = [$param => $replace];
+                        $this->request->params = [$param => $param_value];
                         foreach ($route["middleware"] as $controller) {
                             $controller($this->request, $this->response);
                     
                         }
                         $route_exsist = true;
                     }
-                        //find index of : 
-                         //use index of : to splice text from parsed into route
-                         // check if parsed and route are now the same  
+
                 }
-                // if route has param add param and create correct route
-
-                //check if route exsist with same path 
-
-
-             
-
+   
                 if ($route["path"] === $parsed["path"]) {
                     foreach ($route["middleware"] as $controller) {
                         $controller($this->request, $this->response);
