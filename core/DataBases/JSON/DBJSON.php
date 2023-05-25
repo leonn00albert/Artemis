@@ -19,26 +19,51 @@ use Artemis\Core\DataBases\Interface\Database;
 class DBJSON extends AbstractDB implements Database
 {
     static  $instance;
+    private string $config_file = "./DBJSON_config.json";
     public string $db_name = "";
     public string $db_path = "";
+    private string $key = "ed914e4f4a8be22733c36f2f4fbea1d2";
+    private string $pass = "";
+    private bool $authenticated = false;
     public $data = [];
 
-    protected function __construct($name)
+    protected function __construct($name,$pass)
     {
         $this->db_name = $name;
+       
+   
         if (!is_dir($name)) {
             mkdir($name);
+            $hash_pass = password_hash($pass,PASSWORD_DEFAULT) ;
+            $data = [
+                "name" => $name,
+                "pass" => $hash_pass,
+            ];
+            $this->pass = $hash_pass;
+            $file = fopen($this->config_file,"w");
+            $json_data = json_encode($data);
+            fwrite($file, $json_data);
+            fclose( $file);
+
         }
         $this->db_path = "./" . $name;
         if (is_file($name . "/" . ".json")) {
-            $this->data = $this->openFileDecodeJson($this->db_name . "/" . ".json");
+
+            $config = file_get_contents($this->config_file);
+            $config = json_decode($config,true);
+            if(password_verify($pass,$config["pass"])){
+                $this->authenticated = true;
+                $this->data = $this->openFileDecodeJson($this->db_name . "/" . ".json");
+            }
+
+            
         }
     }
 
-    public static function getInstance($name)
+    public static function getInstance($name,$pass)
     {
         if (!self::$instance) {
-            self::$instance = new DBJSON($name);
+            self::$instance = new DBJSON($name,$pass);
         }
         return self::$instance;
     }
@@ -99,9 +124,9 @@ class DBJSON extends AbstractDB implements Database
     function create(array $arr): array
     {
         array_push($this->data, ["id" => uniqid(), ...$arr]);
-        $key = 'YourEncryptionKey';
+
         $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
-        $encryptedText = openssl_encrypt(json_encode($this->data), 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+        $encryptedText = openssl_encrypt(json_encode($this->data), 'aes-256-cbc', $this->key, OPENSSL_RAW_DATA, $iv);
         $fileSignature = hash('sha256', $encryptedText);
         $encryptedTextWithIV = $iv . $encryptedText;
 
@@ -255,25 +280,27 @@ class DBJSON extends AbstractDB implements Database
      */
     private function openFileDecodeJson(string $file_path): array | null
     {
-        $key = 'YourEncryptionKey';
-        $encryptedTextWithIV = file_get_contents($file_path);
+        if($this->authenticated) {
+            $encryptedTextWithIV = file_get_contents($file_path);
 
-        if ($encryptedTextWithIV === false) {
-        }
+            if ($encryptedTextWithIV === false) {
+            }
+        
+            $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+            $iv = substr($encryptedTextWithIV, 0, $ivLength);
+            $encryptedText = substr($encryptedTextWithIV, $ivLength);
+            
+            $decryptedText = openssl_decrypt($encryptedText, 'aes-256-cbc', $this->key, OPENSSL_RAW_DATA, $iv);
+            
+            $decoded_data = json_decode($decryptedText);
+            if ($decoded_data === null) {
+                $json_error = json_last_error_msg();
     
-        $ivLength = openssl_cipher_iv_length('aes-256-cbc');
-        $iv = substr($encryptedTextWithIV, 0, $ivLength);
-        $encryptedText = substr($encryptedTextWithIV, $ivLength);
-        
-        $decryptedText = openssl_decrypt($encryptedText, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
-        
-        $decoded_data = json_decode($decryptedText);
-        if ($decoded_data === null) {
-            $json_error = json_last_error_msg();
-
-            print  $json_error;
+                print  $json_error;
+            }
+    
+            return (array) $decoded_data;
         }
-
-        return (array) $decoded_data;
+  
     }
 }

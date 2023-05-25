@@ -11,11 +11,11 @@ use Exception;
 
 class DB
 {
-    public static function new(string $type, string $name): Database
+    public static function new(string $type, string $name ,string $pass=""): Database
     {
         switch ($type) {
             case 'JSON':
-                return  DBJSON::getInstance($name);
+                return  DBJSON::getInstance($name,$pass);
             case 'CSV':
                 return  DBCSV::getInstance($name);
             case 'SQLite':
