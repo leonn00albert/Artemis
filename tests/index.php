@@ -42,6 +42,18 @@ $app->get("/ip",function($req,$res){
 
 });
 
+$app->get("/params/:id/test",function($req,$res){
+    $res->send($req->params()["id"]?? "");
+
+});
+
+$app->get("/params/:id",function($req,$res){
+    $res->send($req->params()["id"]?? "");
+
+});
+
+
+
 $app->get("/test/hostname",function($req,$res){
     $res->send($req->hostname());
 

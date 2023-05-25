@@ -32,8 +32,9 @@ class Utils
     * 
     * @return string
     */
-    static function parseParam(string $param): string
-    {
+    static function parseParam(string $param=""): string
+    {   
+
         $parsed = explode(":", $param);
         return $parsed[1];
     }

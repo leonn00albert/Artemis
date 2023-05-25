@@ -160,20 +160,50 @@ class Router
         $wild_card = [];
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
-
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
-                if (Utils::hasParams($route)) {
-                    list($path, $lastSegment) = Utils::splitUrl($route["path"]);
-                    list($second_path, $second_lastSegment) = Utils::splitUrl($parsed["path"]);
 
-                    if ($path == $second_path) {
-                        $this->request->route = $route;
+             
+                //check if route has param
+                if(str_contains($route["path"],":")){
+              
+                    $posOne = strpos($route['path'],":");
+                    $route_string = substr($route["path"],$posOne + 1);
+                    $posTwo = strpos($route_string,"/");
+                    if( $posTwo === false){
+                        $posTwo = strlen($route_string);   
+                    }
+                    $param = substr($route_string,0,$posTwo);
+
+                    $stringOne = substr($parsed["path"],$posOne);
+                    $posTwo = strpos($stringOne,"/");
+                    if( $posTwo === false){
+                        $posTwo = strlen($stringOne);   
+                    }
+                    $replace = substr($stringOne,0,$posTwo);
+
+
+                    $new_route = str_replace(":" .$param,$replace,$route["path"]);
+               
+                  
+
+                    if($new_route === $parsed["path"]){
+                        $this->request->params = [$param => $replace];
                         foreach ($route["middleware"] as $controller) {
                             $controller($this->request, $this->response);
+                    
                         }
                         $route_exsist = true;
                     }
+                        //find index of : 
+                         //use index of : to splice text from parsed into route
+                         // check if parsed and route are now the same  
                 }
+                // if route has param add param and create correct route
+
+                //check if route exsist with same path 
+
+
+             
 
                 if ($route["path"] === $parsed["path"]) {
                     foreach ($route["middleware"] as $controller) {
@@ -191,6 +221,8 @@ class Router
             foreach ($wild_card as $controller) {
                 $controller($this->request, $this->response);
             }
+
+     
         }
 
         $callback();
