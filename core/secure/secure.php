@@ -2,25 +2,6 @@
 // use strategy
 
 namespace Artemis\Core\Secure;
-class SimpleLogin
-{
-    public $login;
-
-    public function __construct()
-    {
-        $this->login = function ($req, $res) {
-            if ($req->body['user'] === "leon" && $req->body['pwd'] === '12345') {
-                $req->auth = True;
-
-            } else {
-                $req->auth = False;
-                $res->send("login fail");
-            }
-
-        };
-    }
-
-}
 
 
 
@@ -59,6 +40,7 @@ class Local implements SecureStrategy
         $this->authenticate = function ($req, $res) {
             if ($req->body()['user'] === "leon" && $req->body()['password'] === '12345') {
                 $req->auth = True;
+                $req->user = $req->body()['user'];
 
             } else {
                 $req->auth = False;
