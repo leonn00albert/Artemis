@@ -183,7 +183,7 @@ class Router
 
                         $unique = function ($new_route) {
                             foreach ($this->routes as $r) {
-                                if($r["path"] === $new_route) {
+                                if($r["path"] === $new_route    ) {
                                     return false;
                                 }
                             }

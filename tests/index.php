@@ -2,10 +2,12 @@
 require_once "vendor/autoload.php";
 
 use Artemis\Core\Router\Router;
+use Artemis\Core\Secure\Local;
+use Artemis\Core\Secure\Secure;
 
 $app = Router::getInstance();
-
-
+$secure = new Secure();
+$secure->use(new Local());
 // request routes
 
 $app->get("/test",function($req,$res){
@@ -90,6 +92,12 @@ $app->get("/get",function($req,$res){
 $app->post("/post",function($req,$res){
     $content = $req->body();
     $res->send($content["test"]);
+
+});
+
+$app->post("/secure/local",$secure->authenticate, function($req,$res){
+    $content = $req->body();
+    $res->send($content["user"]);
 
 });
 
