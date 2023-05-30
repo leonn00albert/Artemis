@@ -7,24 +7,22 @@ $app = Router::getInstance();
 
 class Dependency {
     public function action(){
-        print "di successful";
+        return "di";
     }
 }
 $Dependency = new Dependency();
 $app->use($Dependency);
 
+
+$app->get("/test/di",function($req,$res) use ($app){
+    $res->send($app->Dependency->action());
+});
 // request routes
 
 $app->get("/test",function($req,$res){
     $res->send("test");
 
 });
-
-$app->get("/test/di",function($req,$res) use ($app){
-    $app->Dependency->action();
-
-});
-
 
 $app->get("/protocol",function($req,$res){
     $res->send($req->protocol());
