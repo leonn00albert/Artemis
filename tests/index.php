@@ -5,6 +5,13 @@ use Artemis\Core\Router\Router;
 
 $app = Router::getInstance();
 
+class Dependency {
+    public function action(){
+        print "di successful";
+    }
+}
+$Dependency = new Dependency();
+$app->use($Dependency);
 
 // request routes
 
@@ -12,6 +19,12 @@ $app->get("/test",function($req,$res){
     $res->send("test");
 
 });
+
+$app->get("/test/di",function($req,$res) use ($app){
+    $app->Dependency->action();
+
+});
+
 
 $app->get("/protocol",function($req,$res){
     $res->send($req->protocol());

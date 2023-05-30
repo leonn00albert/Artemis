@@ -98,6 +98,19 @@ final class testArtemis extends TestCase
         $this->assertSame("123asdas2", trim($response));
         
     }
+    public function testDi(): void
+    {
+
+        $url = 'http://localhost:8000/params/123asdas2/test' ;
+        $options = array(
+        'method' => 'GET',
+        );
+        $context = stream_context_create(array('http' => $options));
+        $response = file_get_contents($url, false, $context);
+           
+        $this->assertSame("123asdas2", trim($response));
+        
+    }
 
 
 }
