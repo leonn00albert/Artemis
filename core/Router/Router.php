@@ -12,6 +12,8 @@ use Artemis\Core\Router\Utils;
  */
 class Router
 {
+
+    private $dependencies = array();
     /**
      * @var array
      */
@@ -56,6 +58,18 @@ class Router
         throw new \Exception("Cannot unserialize Router.");
     }
 
+    public function __get($name) {
+        if(isset($this->dependencies[$name])){
+            return $this->dependencies[$name];
+        }
+       
+    }
+
+    public function use($class)
+    {
+       $this->dependencies[$class::class] = $class;
+    }
+
     /**
      * @return Router
      */
@@ -76,6 +90,9 @@ class Router
      * @param object $middleware
      * @return $this
      */
+
+        
+
     public function get(string $path, object $middleware)
     {
         $arg = array_slice(func_get_args(), 1);
@@ -95,6 +112,7 @@ class Router
      * @param object $middleware
      * @return $this
      */
+    
     public function post(string $path, object $middleware)
     {
         $arg = array_slice(func_get_args(), 1);

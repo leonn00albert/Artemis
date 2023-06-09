@@ -5,7 +5,18 @@ use Artemis\Core\Router\Router;
 
 $app = Router::getInstance();
 
+class Dependency {
+    public function action(){
+        return "di";
+    }
+}
+$Dependency = new Dependency();
+$app->use($Dependency);
 
+
+$app->get("/test/di",function($req,$res) use ($app){
+    $res->send($app->Dependency->action());
+});
 // request routes
 
 $app->get("/test",function($req,$res){
