@@ -1,6 +1,6 @@
 <?php
 require_once "vendor/autoload.php";
-
+require_once "Core/TemplateEngine/TemplateEngine.php";
 use Artemis\Core\Router\Router;
 
 $app = Router::getInstance();
@@ -11,9 +11,11 @@ class Dependency {
     }
 }
 $Dependency = new Dependency();
+
+$app->set("view_engine", new TemplateEngine("tests"));
 $app->use($Dependency);
 
-
+$app->use($Dependency);
 $app->get("/test/di",function($req,$res) use ($app){
     $res->send($app->Dependency->action());
 });
@@ -21,6 +23,16 @@ $app->get("/test/di",function($req,$res) use ($app){
 
 $app->get("/test",function($req,$res){
     $res->send("test");
+
+});
+
+$app->get("/tengine",function($req,$res){
+    $data = [
+        'title' => 'My Website',
+        'heading' => 'Welcome to My Website',
+        'content' => 'This is the content of my website.',
+    ];
+    $res->render("example",$data);
 
 });
 

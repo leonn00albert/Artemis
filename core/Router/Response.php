@@ -5,7 +5,7 @@ namespace Artemis\Core\Router;
 class Response
 {
     public $base_url = "views/";
-
+    public $view_engine;
     /**
      * @param string $input
      * 
@@ -41,9 +41,9 @@ class Response
      * 
      * @return [type]
      */
-    public function render(string $file)
+    public function render(string $file , array $data = [])
     {
-        require($file);
+     print $this->view_engine->render($file, $data);
     }
 
     /**

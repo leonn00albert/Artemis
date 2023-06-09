@@ -38,6 +38,8 @@ class Router
     /**
      *
      */
+
+    protected $view_engine;
     protected function __construct()
     {
     }
@@ -70,6 +72,15 @@ class Router
        $this->dependencies[$class::class] = $class;
     }
 
+    public function set(string $setting_name, $class)
+    {
+       
+        match ($setting_name) {
+            "view_engine" => $this->view_engine = $class,
+            default => throw new Exception("Unknown setting: " . $setting_name),
+        };
+    }
+
     /**
      * @return Router
      */
@@ -99,6 +110,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "GET",
@@ -119,6 +131,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "POST",
@@ -138,6 +151,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "DELETE",
@@ -157,6 +171,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "PUT",
@@ -178,6 +193,7 @@ class Router
         $wild_card = [];
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
+      
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
                 if(str_contains($route["path"],":")){
               

@@ -9,6 +9,7 @@ class Request
 {
     public $route = [];
     public $params = [];
+
     /**
      * @return [type]
      */
