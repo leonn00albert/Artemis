@@ -42,6 +42,12 @@ class Router
     protected $view_engine;
     protected function __construct()
     {
+        $this->get("/public/:file", function ($req, $res) {
+            $path_to_file = explode("/", $req->path())[2];
+            header("Content-type:" . $res->getContentType($path_to_file));
+            $file = "public/$path_to_file";
+            readfile($file);
+        });
     }
 
     /**
@@ -67,20 +73,30 @@ class Router
        
     }
 
-    public function use($class)
+    public function use($class) :void
     {
        $this->dependencies[$class::class] = $class;
     }
 
-    public function set(string $setting_name, $class)
+    public function set(string $setting_name, $class) :void
     {
        
         match ($setting_name) {
             "view_engine" => $this->view_engine = $class,
+            "static" => $this->view_engine = $class,   
             default => throw new Exception("Unknown setting: " . $setting_name),
         };
     }
-
+    public function static(string $folderName): void
+    {
+       
+        $this->get("$folderName/:file", function ($req, $res) {
+            $path_to_file = explode("/", $req->path())[2];
+            header("Content-type:" . $res->getContentType($path_to_file));
+            $file = "public/$path_to_file";
+            readfile($file);
+        });
+    }
     /**
      * @return Router
      */
