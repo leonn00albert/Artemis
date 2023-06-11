@@ -38,8 +38,16 @@ class Router
     /**
      *
      */
+
+    protected $view_engine;
     protected function __construct()
     {
+        $this->get("/public/:file", function ($req, $res) {
+            $path_to_file = explode("/", $req->path())[2];
+            header("Content-type:" . $res->getContentType($path_to_file));
+            $file = "public/$path_to_file";
+            readfile($file);
+        });
     }
 
     /**
@@ -65,11 +73,41 @@ class Router
        
     }
 
-    public function use($class)
+    public function use($class) :void
     {
        $this->dependencies[$class::class] = $class;
     }
 
+    /**
+     * @param string $setting_name
+     * @param mixed $class
+     * 
+     * @return void
+     */
+    public function set(string $setting_name, $class) :void
+    {
+       
+        match ($setting_name) {
+            "view_engine" => $this->view_engine = $class,
+            "static" => $this->view_engine = $class,   
+            default => throw new Exception("Unknown setting: " . $setting_name),
+        };
+    }
+    /**
+     * @param string $folderName
+     * 
+     * @return void
+     */
+    public function static(string $folderName): void
+    {
+       
+        $this->get("$folderName/:file", function ($req, $res) {
+            $path_to_file = explode("/", $req->path())[2];
+            header("Content-type:" . $res->getContentType($path_to_file));
+            $file = "public/$path_to_file";
+            readfile($file);
+        });
+    }
     /**
      * @return Router
      */
@@ -99,6 +137,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "GET",
@@ -119,6 +158,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "POST",
@@ -138,6 +178,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "DELETE",
@@ -157,6 +198,7 @@ class Router
 
         $this->request = new Request();
         $this->response = new Response();
+        $this->response->view_engine = $this->view_engine;
         array_push($this->routes, array(
             "path" => $path,
             "type" => "PUT",
@@ -178,6 +220,7 @@ class Router
         $wild_card = [];
         $parsed = parse_url($_SERVER["REQUEST_URI"]);
         foreach ($this->routes as $route) {
+      
             if ($route["type"] == $_SERVER["REQUEST_METHOD"]) {
                 if(str_contains($route["path"],":")){
               
