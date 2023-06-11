@@ -41,9 +41,9 @@ class Response
      * 
      * @return [type]
      */
-    public function render(string $file , array $data = [])
+    public function render(string $file, array $data = [])
     {
-     print $this->view_engine->render($file, $data);
+        print $this->view_engine->render($file, $data);
     }
 
     /**
@@ -78,7 +78,6 @@ class Response
             readfile($file);
             exit;
         }
-
     }
 
     /**
@@ -98,13 +97,18 @@ class Response
             case "json":
                 header("Content-Type: application/json");
                 break;
+            case 'jpeg':
+                header('Content-Type: image/jpeg');
+                break;
+            case 'png':
+                header('Content-Type: image/png');
+                break;
             case "application/json":
                 header("Content-Type: application/json");
                 break;
             default:
                 header("Content-Type: " . $type);
                 break;
-
         }
     }
 }

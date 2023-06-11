@@ -78,6 +78,12 @@ class Router
        $this->dependencies[$class::class] = $class;
     }
 
+    /**
+     * @param string $setting_name
+     * @param mixed $class
+     * 
+     * @return void
+     */
     public function set(string $setting_name, $class) :void
     {
        
@@ -87,6 +93,11 @@ class Router
             default => throw new Exception("Unknown setting: " . $setting_name),
         };
     }
+    /**
+     * @param string $folderName
+     * 
+     * @return void
+     */
     public function static(string $folderName): void
     {
        
