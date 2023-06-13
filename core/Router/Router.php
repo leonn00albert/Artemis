@@ -13,7 +13,8 @@ use Artemis\Core\Router\Utils;
 class Router
 {
 
-    private $dependencies = array();
+    public array $locals = array();
+    private array $dependencies = array();
     /**
      * @var array
      */
@@ -69,7 +70,7 @@ class Router
     public function __get($name) {
         if(isset($this->dependencies[$name])){
             return $this->dependencies[$name];
-        }
+        }   
        
     }
 
