@@ -53,6 +53,14 @@ class Response
      */
     public function redirect(string $path)
     {
+        $this->status(301);
+        header("Location: $path");
+        exit;
+    }
+
+    public function location(string $path)
+    {
+      
         header("Location: $path");
         exit;
     }
