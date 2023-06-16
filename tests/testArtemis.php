@@ -45,7 +45,6 @@ final class testArtemis extends TestCase
         'method' => 'PUT',
         'header' => 'Content-Type: application/x-www-form-urlencoded',
         'content' => http_build_query($form_data)
-
         );
         $context = stream_context_create(array('http' => $options));
         $response = file_get_contents($url, false, $context);
