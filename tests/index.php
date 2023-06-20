@@ -2,6 +2,7 @@
 require_once "vendor/autoload.php";
 require_once "Core/TemplateEngine/TemplateEngine.php";
 use Artemis\Core\Router\Router;
+use Artemis\Core\DataBases\DB;
 
 $app = Router::getInstance();
 
@@ -12,6 +13,8 @@ class Dependency {
 }
 $Dependency = new Dependency();
 
+
+
 $app->set("view_engine", new TemplateEngine("tests"));
 $app->use($Dependency);
 
@@ -20,7 +23,21 @@ $app->get("/test/di",function($req,$res) use ($app){
     $res->send($app->Dependency->action());
 });
 // request routes
+$app->get("/db/test",function($req,$res) use ($app){
+    $db = DB::new("PDO", "test","","mysql","localhost","root");
+    $db->createTable([
+        "table_name" => "test",
+        "sql" => "CREATE TABLE test (
+            id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            firstname VARCHAR(30) NOT NULL,
+            lastname VARCHAR(30) NOT NULL,
+            email VARCHAR(50),
+            reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )"
+    ]);
+    $res->send("test");
 
+});
 $app->get("/test",function($req,$res){
     $res->send("test");
 

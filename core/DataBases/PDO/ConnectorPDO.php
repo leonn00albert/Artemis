@@ -30,7 +30,7 @@ class ConnectorPDO extends AbstractDB implements Database
 
     protected function __construct(string $driver,string $db_host, string $db_user, string $db_password, string $db_name)
     {
-        $connection = $this->createPDO($driver,$db_host,$db_user,$db_password,$db_name);
+        $this->connection = $this->createPDO($driver,$db_host,$db_user,$db_password,$db_name);
         $this->db_user = $db_user;
         $this->db_host = $db_host;
         $this->db_password = $db_password;
@@ -169,19 +169,17 @@ class ConnectorPDO extends AbstractDB implements Database
     public function createTable(array $arr): bool|Database
     {
         // Check if the table exists
-        $query = "SHOW TABLES LIKE " . $arr["tablename"];
+        $query = "SHOW TABLES LIKE '" . $arr["table_name"] . "'";
         $stmt = $this->connection->query($query);
-        $tableExists = ($stmt->rowCount() > 0);
-        $this->table = $arr["tablename"];
+        $tableExists = ($stmt->fetchColumn() > 0);
+        $this->table = $arr["table_name"];
         if (!$tableExists) {
-            
             $this->connection->exec($arr["sql"]);
             return $this;
         } else {
             return false;
         }
     }
-
     /**
      * @param mixed $table
      * 
