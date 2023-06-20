@@ -38,6 +38,19 @@ $app->get("/db/test",function($req,$res) use ($app){
     $res->send("test");
 
 });
+
+$app->get("/db/test/create",function($req,$res) use ($app){
+    $db = DB::new("PDO", "test","","mysql","localhost","root");
+    $db->selectTable("test");
+
+    $db->create([
+        "table_name" => "test",
+        "sql" => "INSERT INTO test (firstname, lastname, email)
+        VALUES ('John', 'Doe', 'john@example.com')"
+    ]);
+    $res->send("created");
+
+});
 $app->get("/test",function($req,$res){
     $res->send("test");
 
