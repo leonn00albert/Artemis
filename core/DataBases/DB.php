@@ -21,8 +21,7 @@ class DB
                 return  DBCSV::getInstance($name);
             case 'SQLite':
                 return  SQLite::getInstance($name);
-
-                case 'PDO':
+            case 'PDO':
                     return  ConnectorPDO::getInstance($driver,$db_host, $db_user, $pass, $name);
             default:
                 throw new Exception("Invalid db type: " . $type);

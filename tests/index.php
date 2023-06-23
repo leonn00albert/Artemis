@@ -2,6 +2,7 @@
 require_once "vendor/autoload.php";
 require_once "Core/TemplateEngine/TemplateEngine.php";
 use Artemis\Core\Router\Router;
+use Artemis\Core\Forms\Forms;
 use Artemis\Core\DataBases\DB;
 
 $app = Router::getInstance();
@@ -97,7 +98,7 @@ $app->get("/ip",function($req,$res){
 
 });
 
-$app->get("/params/:id/test",function($req,$res){
+$app->get("/params/:id/test",function($req,$res ,){
     $res->send($req->params()["id"]?? "");
 
 });
