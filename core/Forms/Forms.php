@@ -8,12 +8,13 @@ use function PHPUnit\Framework\isEmpty;
  */
 class Forms
 {
-    public $sanatize;
+    public $sanitize;
     public function __construct() {
-        $this->sanatize = function ($req, $res) {
+        $this->sanitize = function ($req, $res) {
+         
             if(count($req->body()) > 0) {
                 foreach($req->body() as $key => $value) {
-                    $req->sanatized[$key] = $this->checkInput($value);
+                    $req->sanitized[$key] = $this->checkInput($value);
                 }
         
             }

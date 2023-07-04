@@ -1,4 +1,6 @@
 <?php
+namespace Artemis\Core\TemplateEngine;
+use Exception;
 class TemplateEngine
 {
     protected $templateDir;

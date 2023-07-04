@@ -62,8 +62,8 @@ class ConnectorPDO extends AbstractDB implements Database
     public function create(array $query)
     {
         try {
-            $this->connection->exec($query["sql"]);
-          
+            $stmt = $this->connection->prepare($query["sql"]);
+            $stmt->execute($query["params"] ?? []);
             return $this;
         } catch (PDOException $e) {
             echo $query["sql"] . "<br>" . $e->getMessage();
@@ -75,7 +75,7 @@ class ConnectorPDO extends AbstractDB implements Database
         $arr = [];
         try {
             $stmt = $this->connection->prepare($query["sql"]);
-            $stmt->execute();
+            $stmt->execute($query["params"] ?? []);
 
             $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
             foreach ($stmt->fetchAll() as $k => $v) {
@@ -104,11 +104,19 @@ class ConnectorPDO extends AbstractDB implements Database
      */
 
 
+    /**
+     * @param string $table
+     * 
+     * @return void
+     */
     public function selectTable(string $table) :void
     {
         $this->table = $table;
 
     }
+    /**
+     * @return PDO
+     */
     public function conn(): PDO
     {
         return $this->connection;
@@ -119,14 +127,14 @@ class ConnectorPDO extends AbstractDB implements Database
      * 
      * @return bool
      */
-    public function update($sql): bool
+    public function update($query): bool
     {
         try {
-            $stmt = $this->connection->prepare($sql);
+            $stmt = $this->connection->prepare($query["sql"]);
             $stmt->execute();
             return true;
         } catch (PDOException $e) {
-            echo $sql . "<br>" . $e->getMessage();
+            echo $query["sql"] . "<br>" . $e->getMessage();
             return false;
         }
     }
@@ -146,13 +154,14 @@ class ConnectorPDO extends AbstractDB implements Database
      * 
      * @return bool or Database
      */
-    public function deleteById( string $id): bool|Database
+    public function deleteById(string $id): bool
     {
         try {
-
-            $sql = "DELETE FROM $this->table WHERE id=$id";
-            $this->connection->exec($sql);
-            return $this;
+            $sql = "DELETE FROM $this->table WHERE id=:id";
+            $stmt = $this->connection->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return true;
         } catch (PDOException $e) {
             echo $sql . "<br>" . $e->getMessage();
             return false;

@@ -6,6 +6,7 @@ use Exception;
 use Artemis\Core\Router\Response;
 use Artemis\Core\Router\Request;
 use Artemis\Core\Router\Utils;
+use stdClass;
 
 /**
  *
@@ -74,9 +75,9 @@ class Router
        
     }
 
-    public function use($class) :void
+    public function use(string $name, $class) :void
     {
-       $this->dependencies[$class::class] = $class;
+       $this->dependencies[$name] = $class;
     }
 
     /**

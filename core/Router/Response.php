@@ -4,7 +4,7 @@ namespace Artemis\Core\Router;
 
 class Response
 {
-    public $base_url = "views/";
+    public $base_url = "/views/";
     public $view_engine;
     /**
      * @param string $input
@@ -52,9 +52,16 @@ class Response
      * @return [type]
      */
     public function redirect(string $path)
-    {
-        $this->status(301);
-        header("Location: $path");
+    { 
+        if($path === "back" || $path === "BACK"){
+            $this->status(301);
+            header("Location: ". $_SERVER['HTTP_REFERER']);
+          
+        } else {
+            $this->status(301);
+            header("Location: $path");
+        }
+
         exit;
     }
 
