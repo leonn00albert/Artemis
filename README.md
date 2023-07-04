@@ -46,8 +46,8 @@ inside index.php ->
 ```php
 <?php
 require_once __DIR__.'/vendor/autoload.php';
+use Artemis\Core\Router\Router;
 
-use Artemis\Core\Router
 $app = Router::getInstance();
 
 $app->get("/", function($req,$res){
@@ -59,7 +59,6 @@ $app->get("/", function($req,$res){
 $app->listen("/", function(){
 });
 
-?>
 ```
 Start local server in terminal
 

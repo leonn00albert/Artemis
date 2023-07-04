@@ -31,7 +31,8 @@ class Request
             $formData = $_POST;
             return $formData;
         } else {
-
+            $formData = $_POST;
+            return $formData;
         }
  
     }
